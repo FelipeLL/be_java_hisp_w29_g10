@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements  IUserRepository{
@@ -23,5 +24,15 @@ public class UserRepositoryImpl implements  IUserRepository{
                 new User(9L, "Ivy"),
                 new User(10L, "Jack")
         ));
+    }
+
+    @Override
+    public List<User> findAll() {
+        return users;
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return users.stream().filter(user -> user.getUser_id().equals(id)).findFirst();
     }
 }

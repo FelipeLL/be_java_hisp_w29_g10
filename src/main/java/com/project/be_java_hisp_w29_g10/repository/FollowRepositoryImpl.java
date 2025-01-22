@@ -10,6 +10,8 @@ import java.util.List;
 public class FollowRepositoryImpl implements  IFollowRepository {
     private List<Follow> follows;
 
+
+
     public FollowRepositoryImpl(){
         follows = new ArrayList<>(List.of(
                 new Follow(1L,6L),
@@ -49,5 +51,12 @@ public class FollowRepositoryImpl implements  IFollowRepository {
                 new Follow(10L,6L),
                 new Follow(10L,2L)
         ));
+    }
+
+    @Override
+    public Follow saveFollow(Long userId, Long userIdToFollow) {
+        Follow newFollow = new Follow(userIdToFollow, userId);
+        follows.add(newFollow);
+        return newFollow;
     }
 }
