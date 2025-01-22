@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class SellerRepositoryImpl implements ISellerRepository {
@@ -24,5 +25,10 @@ public class SellerRepositoryImpl implements ISellerRepository {
                 new Seller(9L, "Isabela", "302-901-2345"),
                 new Seller(10L, "Jorge", "312-012-3456")
         ));
+    }
+
+    @Override
+    public Optional<Seller> findById(Long id) {
+        return sellers.stream().filter(seller -> seller.getId_seller().equals(id)).findFirst();
     }
 }
