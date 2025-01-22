@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
     List<Post> posts;
-
+//prueba nueva
     public PostRepositoryImpl(){
         posts = new ArrayList<>(List.of(
                 new Post(1L, 1, "2025-01-01", 1L, 1, 1200.00, true, 200.00),
