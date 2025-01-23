@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface IFollowRepository {
     Follow saveFollow(Long userId, Long userIdToFollow);
-    Follow removeFollow(Long userId, Long userIdToUnfollow);
+    Follow removeFollow(Follow followRelation);
     Optional<Follow> getFollowRelation(Long userId, Long userIdToFollow);
 }
