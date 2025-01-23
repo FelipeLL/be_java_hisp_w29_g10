@@ -21,6 +21,8 @@ public class PostRequestDto {
     private Integer category;
     private Double price;
     private ProductRequestDto product;
+
+    @Builder.Default
     private Double discount = 0.0;
 
     @Builder.Default

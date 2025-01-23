@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -27,6 +28,11 @@ public class PostRepositoryImpl implements IPostRepository {
                 new Post(10L, 10L, LocalDate.parse("2025-01-10"), 10L, 5, 199.99, false, 0.00)
         ));
 
+    }
+
+    @Override
+    public Optional<Post> getById(Long id) {
+        return posts.stream().filter(post -> post.getPost_id() == id).findFirst();
     }
 
     @Override

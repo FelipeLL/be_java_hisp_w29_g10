@@ -7,6 +7,7 @@ import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -23,9 +24,17 @@ public class PostServiceImpl implements IPostService{
     @Override
     public Post save(PostRequestDto postDto) {
         Random random = new Random();
-        Long postId = random.nextLong(1000);
+        long postId;
+        Optional<Post> existPost;
+        Post newPost;
         Product newProduct = convertToProduct(postDto.getProduct());
-        Post newPost = convertToPost(postDto, postId);
+
+        do {
+            postId = random.nextLong(1000);
+            existPost = postRepository.getById(postId);
+        } while (existPost.isPresent());
+
+        newPost = convertToPost(postDto, postId);
 
         productService.save(newProduct);
 
@@ -52,6 +61,7 @@ public class PostServiceImpl implements IPostService{
                 .category(dto.getCategory())
                 .price(dto.getPrice())
                 .has_promo(dto.getHas_promo())
+                .discount(dto.getDiscount())
                 .build();
 
     }
