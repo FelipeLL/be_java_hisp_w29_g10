@@ -5,7 +5,10 @@ import com.project.be_java_hisp_w29_g10.entity.Follow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface IFollowRepository {
     Follow saveFollow(Long userId, Long userIdToFollow);
+    Follow removeFollow(Long userId, Long userIdToUnfollow);
+    Optional<Follow> getFollowRelation(Long userId, Long userIdToFollow);
 }
