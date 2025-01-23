@@ -64,6 +64,7 @@ public class FollowRepositoryImpl implements  IFollowRepository {
     @Override
     public Follow removeFollow(Long userId, Long userIdToUnfollow) {
         Follow followRealtion = getFollowRelation(userId, userIdToUnfollow).orElse(null);
+        follows.remove(followRealtion);
         return followRealtion;
     }
 
