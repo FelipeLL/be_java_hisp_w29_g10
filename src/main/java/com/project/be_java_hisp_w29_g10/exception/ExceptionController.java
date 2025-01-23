@@ -15,8 +15,8 @@ public class ExceptionController {
         return new ResponseEntity<>(exceptionDto, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(InvalidPromoException.class)
-    public ResponseEntity<?> invalidPromoException(InvalidPromoException e){
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<?> invalidPromoException(BadRequestException e){
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
     }

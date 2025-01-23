@@ -4,7 +4,7 @@ import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
-import com.project.be_java_hisp_w29_g10.exception.InvalidPromoException;
+import com.project.be_java_hisp_w29_g10.exception.BadRequestException;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +45,7 @@ public class PostServiceImpl implements IPostService{
     @Override
     public Post savePromo(PostRequestDto postRequestDto) {
         if (!postRequestDto.getHas_promo()){
-            throw new InvalidPromoException("The post does not have a promo");
+            throw new BadRequestException("The post does not have a promo");
         }
         return save(postRequestDto);
     }
