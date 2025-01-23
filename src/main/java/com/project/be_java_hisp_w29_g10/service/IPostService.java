@@ -6,4 +6,5 @@ import com.project.be_java_hisp_w29_g10.entity.Post;
 
 public interface IPostService {
     Post save(PostRequestDto postDto);
+    Post savePromo(PostRequestDto postRequestDto);
 }
