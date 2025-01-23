@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FollowRepositoryImpl implements  IFollowRepository {
@@ -58,5 +59,16 @@ public class FollowRepositoryImpl implements  IFollowRepository {
         Follow newFollow = new Follow(userIdToFollow, userId);
         follows.add(newFollow);
         return newFollow;
+    }
+
+    @Override
+    public Follow removeFollow(Follow followRelation) {
+        follows.remove(followRelation);
+        return followRelation;
+    }
+
+    @Override
+    public Optional<Follow> getFollowRelation(Long userId, Long userIdToFollow) {
+        return follows.stream().filter(follow -> follow.getSeller_id().equals(userIdToFollow) && follow.getUser_id().equals(userId)).findFirst();
     }
 }

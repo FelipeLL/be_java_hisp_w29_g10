@@ -19,5 +19,10 @@ public class ExceptionController {
     public ResponseEntity<?> invalidPromoException(BadRequestException e){
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> conflictException(ConflictException e){
+        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+        return new ResponseEntity<>(exceptionDto, HttpStatus.CONFLICT);
     }
 }
