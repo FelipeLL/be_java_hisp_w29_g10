@@ -1,14 +1,13 @@
 package com.project.be_java_hisp_w29_g10.service;
 
 
-import com.project.be_java_hisp_w29_g10.dto.ResponseMessageDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.entity.Follow;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
 import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
 import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +15,7 @@ public class UserServiceImpl implements IUserService{
     private final IUserRepository userRepository;
     private final ISellerRepository sellerRepository;
     private final IFollowRepository followRepository;
+
 
     public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository){
         this.userRepository = userRepository;
