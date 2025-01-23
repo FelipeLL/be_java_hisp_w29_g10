@@ -20,8 +20,8 @@ public class ProductController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> savePost(@RequestBody PostRequestDto postDto){
+    public ResponseEntity<String> savePost(@RequestBody PostRequestDto postDto){
         postService.save(postDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Publicación creada exitosamente.", HttpStatus.OK);
     }
 }

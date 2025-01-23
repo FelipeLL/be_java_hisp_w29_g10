@@ -1,10 +1,12 @@
 package com.project.be_java_hisp_w29_g10.repository;
 
 import com.project.be_java_hisp_w29_g10.entity.Product;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ProductRepositoryImpl implements IProductRepository {
     List<Product> products;
 
@@ -26,5 +28,11 @@ public class ProductRepositoryImpl implements IProductRepository {
 
     public Product getById(Long id){
         return  products.stream().filter(product -> product.getProduct_id().equals(id)).findFirst().orElse(null);
+    }
+
+    @Override
+    public Product save(Product newProduct) {
+        products.add(newProduct);
+        return newProduct;
     }
 }

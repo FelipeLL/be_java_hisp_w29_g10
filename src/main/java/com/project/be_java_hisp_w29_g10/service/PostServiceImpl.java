@@ -13,24 +13,22 @@ import java.util.Random;
 public class PostServiceImpl implements IPostService{
 
     private final IPostRepository postRepository;
+    private final IProductService productService;
 
-    public PostServiceImpl(IPostRepository postRepository){
+    public PostServiceImpl(IPostRepository postRepository, IProductService productService){
         this.postRepository = postRepository;
+        this.productService = productService;
     }
 
     @Override
     public Post save(PostRequestDto postDto) {
-
-
-        Product newProduct = convertToProduct(postDto.getProduct());
-
         Random random = new Random();
         Long postId = random.nextLong(1000);
-
-        // save product
-
-        // save post
+        Product newProduct = convertToProduct(postDto.getProduct());
         Post newPost = convertToPost(postDto, postId);
+
+        productService.save(newProduct);
+
         return postRepository.save(newPost);
     }
 
