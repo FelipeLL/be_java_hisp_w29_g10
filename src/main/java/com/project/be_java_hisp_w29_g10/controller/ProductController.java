@@ -4,8 +4,6 @@ import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
-import com.project.be_java_hisp_w29_g10.service.IProductService;
-import com.project.be_java_hisp_w29_g10.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final IPostService postService;
-    private final IUserService userService;
 
-    public ProductController(IPostService postService, IUserService userService){
+    public ProductController(IPostService postService){
         this.postService = postService;
-        this.userService = userService;
     }
 
     @PostMapping("/post")
