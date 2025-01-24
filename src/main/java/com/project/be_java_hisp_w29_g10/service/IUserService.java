@@ -10,4 +10,6 @@ public interface IUserService {
     String getUserName(Long userId);
     //Metodo para devolver el usuario y la lista de vendedores que sigue(US4)
     UserFollowedSellerDto getUserAndFollowedSellers(Long userId);
+    //Metodo para ordenar por nombre los follower/followed
+    UserFollowedSellerDto OrderByName(UserFollowedSellerDto userFolloewdSeller, String order);
 }
