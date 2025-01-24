@@ -4,7 +4,9 @@ import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
+import com.project.be_java_hisp_w29_g10.entity.Seller;
 import com.project.be_java_hisp_w29_g10.exception.BadRequestException;
+import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,20 @@ public class PostServiceImpl implements IPostService{
 
     private final IPostRepository postRepository;
     private final IProductService productService;
+    private final IUserService userService;
 
-    public PostServiceImpl(IPostRepository postRepository, IProductService productService){
+    public PostServiceImpl(IPostRepository postRepository, IProductService productService, IUserService userService) {
         this.postRepository = postRepository;
         this.productService = productService;
+        this.userService = userService;
     }
 
     @Override
     public Post save(PostRequestDto postDto) {
+        Optional<Seller> seller = userService.getSellerById(postDto.getUser_id());
+        if(seller.isPresent()) {
+            throw new NotFoundException("Seller not found");
+        }
         Random random = new Random();
         long postId;
         Optional<Post> existPost;
