@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -39,5 +40,10 @@ public class PostRepositoryImpl implements IPostRepository {
     public Post save(Post newPost) {
          posts.add(newPost);
          return newPost;
+    }
+
+    @Override
+    public List<Post> getPromoPostBySellerID(Long userId) {
+        return posts.stream().filter(post -> post.getUser_id().equals(userId) && post.getHas_promo()).collect(Collectors.toList());
     }
 }
