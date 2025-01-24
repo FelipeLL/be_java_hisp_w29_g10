@@ -48,19 +48,19 @@ Toda la documentación del proyecto se aloja en **Notion**, lo cual nos permite:
 
 #### 💻 Endpoints
 
-| 🏷 User Story | 📍 Endpoint | 👤 Responsable |
+| User Story |  Endpoint  | Responsable |
 |:-----|:--------:|------:|
-| US 0001   | POST - url | Pablo Viano |
-| US 0002   | GET - url | Erik Jonathan Calvillo |
-| US 0003   | GET - url | Erik Jonathan Calvillo |
-| US 0004   | GET - url | Erik Jonathan Calvillo |
-| US 0005   | POST - url | Juan Felipe Ladino Lozano |
-| US 0006   | GET - url | Silvia Juliana Moreno Roa |
-| US 0007   | POST - url | Pablo Viano |
-| US 0008   | GET - url | Andres Karchesky |
-| US 0009   | GET - url | Andres Karchesky |
-| US 0010   | POST - url | Brayan Steven Arellano Espinosa |
-| US 0011   | GET - url | Brayan Steven Arellano Espinosa |
+| US 0001   | POST - /users/{userId}/follow/{userIdToFollow} | Pablo Viano |
+| US 0002   | GET - /users/{userId}/followers/count  | Erik Jonathan Calvillo |
+| US 0003   | GET - /users/{userId}/followers/list | Erik Jonathan Calvillo |
+| US 0004   | GET - /users/{userId}/followed/list | Erik Jonathan Calvillo |
+| US 0005   | POST - /products/post | Juan Felipe Ladino Lozano |
+| US 0006   | GET - /products/followed/{userId}/list | Silvia Juliana Moreno Roa |
+| US 0007   | POST - /users/{userId}/unfollow/{userIdToUnfollow} | Pablo Viano |
+| US 0008   | GET - /users/{UserID}/followers/list?order=name_asc | Andres Karchesky |
+| US 0009   | GET - /products/followed/{userId}/list?order=date_asc | Andres Karchesky |
+| US 0010   | POST - /products/promo-post | Brayan Steven Arellano Espinosa |
+| US 0011   | GET - /products/promo-post/count?user_id={userId} | Brayan Steven Arellano Espinosa |
 
 #### 🛠️ Modelo Entidad-Relación:
 
