@@ -7,4 +7,6 @@ public interface IFollowService {
     Integer getCountFollowers(Long sellerId);
     //Metodo para devolver la lista de seguidores de un vendedor(US3)
     List<Long> getFollowersOfSeller(Long sellerId);
+    //Metodo para devolver la lista de vendedores que sigue de un usuario(US4)
+    List<Long> getSellersFollowedByUser(Long id);
 }

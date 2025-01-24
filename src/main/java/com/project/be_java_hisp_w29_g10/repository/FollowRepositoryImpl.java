@@ -77,4 +77,10 @@ public class FollowRepositoryImpl implements  IFollowRepository {
     public List<Long> getFollowersOfSeller(Long sellerId) {
         return follows.stream().filter(follow -> follow.getSeller_id().equals(sellerId)).map(Follow::getUser_id).toList();
     }
+
+    //Metodo para devolver una lista con el id de los vendedores que sigue un usuario(US4)
+    @Override
+    public List<Long> getSellersFollowedByUser(Long userId) {
+        return follows.stream().filter(follow -> follow.getUser_id().equals(userId)).map(Follow::getSeller_id).toList();
+    }
 }

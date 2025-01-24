@@ -1,8 +1,11 @@
 package com.project.be_java_hisp_w29_g10.service;
 
 
+import com.project.be_java_hisp_w29_g10.dto.request.response.FollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.entity.Follow;
+import com.project.be_java_hisp_w29_g10.entity.User;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
@@ -10,17 +13,23 @@ import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
 import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements IUserService{
     private final IUserRepository userRepository;
     private final ISellerRepository sellerRepository;
     private final IFollowRepository followRepository;
+    private final IFollowService followService;
+    private final IFollowManagementService followManagementServicve;
 
-
-    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository){
+    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowService followService, IFollowManagementService followManagementServicve) {
         this.userRepository = userRepository;
         this.sellerRepository = sellerRepository;
         this.followRepository = followRepository;
+        this.followService = followService;
+        this.followManagementServicve = followManagementServicve;
     }
 
     @Override
@@ -48,5 +57,18 @@ public class UserServiceImpl implements IUserService{
     @Override
     public String getUserName(Long userId) {
         return userRepository.findById(userId).get().getUser_name();
+    }
+    //Metodo para devolver el usuario y la lista de vendedores que sigue(US4)
+    @Override
+    public UserFollowedSellerDto getUserAndFollowedSellers(Long userId) {
+        if(followService.getSellersFollowedByUser(userId).isEmpty()) {
+            throw new NotFoundException("No se encontro el usuario con el ID: "+userId);
+        }
+        List<Long> sellersFollowed = followService.getSellersFollowedByUser(userId);
+        Optional<User> user = userRepository.findById(userId);
+        List<FollowedSellerDto> followedSellerDtos = sellersFollowed.stream()
+                .map(sellerId -> new FollowedSellerDto(sellerId, followManagementServicve.getSellerName(sellerId)))
+                .toList();
+        return new UserFollowedSellerDto(user.get().getUser_id(), user.get().getUser_name(), followedSellerDtos);
     }
 }
