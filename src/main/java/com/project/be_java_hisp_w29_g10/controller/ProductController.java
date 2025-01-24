@@ -4,6 +4,7 @@ import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
+import com.project.be_java_hisp_w29_g10.service.IProductService;
 import com.project.be_java_hisp_w29_g10.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class ProductController {
     }
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> getRecentPostsByFollowedSellers(@PathVariable Long userId) {
-        RecentPostsResponseDto response = userService.getRecentPostsByFollowedSellers(userId);
+        RecentPostsResponseDto response = postService.getRecentPostsByFollowedSellers(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

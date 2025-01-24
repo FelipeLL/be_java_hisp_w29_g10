@@ -1,6 +1,5 @@
 package com.project.be_java_hisp_w29_g10.service;
 
-import com.project.be_java_hisp_w29_g10.dto.request.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
 
@@ -11,5 +10,4 @@ public interface IUserService {
     String getUserName(Long userId);
     //Metodo para devolver el usuario y la lista de vendedores que sigue(US4)
     UserFollowedSellerDto getUserAndFollowedSellers(Long userId);
-    RecentPostsResponseDto getRecentPostsByFollowedSellers(Long userId);
 }
