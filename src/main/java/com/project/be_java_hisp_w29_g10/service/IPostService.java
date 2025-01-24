@@ -12,5 +12,5 @@ public interface IPostService {
 
     PromoPostCountDto getPromoPostCountBySellerId(Long userId);
     RecentPostsResponseDto getRecentPostsByFollowedSellers(Long userId);
-
+    RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, String order);
 }
