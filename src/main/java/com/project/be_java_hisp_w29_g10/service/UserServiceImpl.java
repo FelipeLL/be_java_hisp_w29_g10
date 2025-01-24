@@ -7,6 +7,8 @@ import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.*;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,5 +70,19 @@ public class UserServiceImpl implements IUserService{
         return new UserFollowedSellerDto(user.get().getUser_id(), user.get().getUser_name(), followedSellerDtos);
     }
 
+    @Override
+    public UserFollowedSellerDto OrderByName(UserFollowedSellerDto userFollowedSeller, String order) {
+        List<FollowedSellerDto> followed = new ArrayList<>(userFollowedSeller.getFollowed());
+        if (order.equals("name_asc")) {
+            followed.sort(Comparator.comparing(FollowedSellerDto::getUser_name));
+        } else if (order.equals("name_desc")) {
+            followed.sort(Comparator.comparing(FollowedSellerDto::getUser_name).reversed());
+        }else {
+            throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
+        }
+
+        userFollowedSeller.setFollowed(followed);
+        return userFollowedSeller;
+    }
 
 }

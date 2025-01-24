@@ -6,7 +6,7 @@ import com.project.be_java_hisp_w29_g10.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -37,14 +37,22 @@ public class UserController {
 
     //ENDPOINT PARA OBTENER A UN VENDEDOR Y SU LISTA DE SEGUIDORES(US 03)
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId) {
-        return new ResponseEntity<>(sellerService.getSellerAndFollowers(userId), HttpStatus.OK);
+    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+        SellerFollowersDto sellerFollowersDto = sellerService.getSellerAndFollowers(userId);
+        if (order != null) {
+            sellerFollowersDto = sellerService.OrderByName(sellerFollowersDto,order);
+        }
+        return new ResponseEntity<>(sellerFollowersDto, HttpStatus.OK);
     }
 
     //ENDPOINT PARA OBTENER EL NOMBRE DE UN VENDEDOR(US 04)
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId) {
-        return new ResponseEntity<>(userService.getUserAndFollowedSellers(userId), HttpStatus.OK);
+    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+        UserFollowedSellerDto userFollowedSeller = userService.getUserAndFollowedSellers(userId);
+        if (order != null){
+            userFollowedSeller = userService.OrderByName(userFollowedSeller,order);
+        }
+        return new ResponseEntity<>(userFollowedSeller, HttpStatus.OK);
     }
 
 
