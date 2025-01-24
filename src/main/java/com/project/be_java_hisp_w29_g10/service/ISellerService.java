@@ -1,8 +1,7 @@
 package com.project.be_java_hisp_w29_g10.service;
 
-import com.project.be_java_hisp_w29_g10.dto.request.response.FollowersCountDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.SellerFollowersDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
+import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
 
 import java.util.Optional;

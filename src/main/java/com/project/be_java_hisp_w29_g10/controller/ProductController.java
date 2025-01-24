@@ -1,8 +1,8 @@
 package com.project.be_java_hisp_w29_g10.controller;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.RecentPostsResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
+import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

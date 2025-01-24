@@ -2,7 +2,10 @@ package com.project.be_java_hisp_w29_g10.service;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.*;
+import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.response.ProductResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
+import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
@@ -123,7 +126,7 @@ public class PostServiceImpl implements IPostService{
         // Obtener publicaciones recientes
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
         List<PostResponseDto> recentPosts = followedSellers.stream()
-                .flatMap(sellerId -> postRepository.getPromoPostBySellerID(sellerId).stream())
+                .flatMap(sellerId -> postRepository.getPostBySellerID(sellerId).stream())
                 .filter(post -> post.getDate().isAfter(twoWeeksAgo))
                 .sorted(Comparator.comparing(Post::getDate).reversed())
                 .map(post -> new PostResponseDto(

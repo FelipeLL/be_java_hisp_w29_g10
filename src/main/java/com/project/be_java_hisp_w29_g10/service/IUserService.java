@@ -1,7 +1,7 @@
 package com.project.be_java_hisp_w29_g10.service;
 
-import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.dto.response.ResponseMessageDto;
+import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
 
 public interface IUserService {
     ResponseMessageDto followSeller(Long userId, Long userIdToFollow);

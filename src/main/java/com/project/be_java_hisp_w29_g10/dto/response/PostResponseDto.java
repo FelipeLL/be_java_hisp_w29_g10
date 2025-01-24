@@ -1,4 +1,4 @@
-package com.project.be_java_hisp_w29_g10.dto.request.response;
+package com.project.be_java_hisp_w29_g10.dto.response;
 
 
 import lombok.AllArgsConstructor;
