@@ -2,6 +2,7 @@ package com.project.be_java_hisp_w29_g10.service;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
@@ -10,6 +11,7 @@ import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -29,7 +31,7 @@ public class PostServiceImpl implements IPostService{
     @Override
     public Post save(PostRequestDto postDto) {
         Optional<Seller> seller = sellerService.getSellerById(postDto.getUser_id());
-        if(seller.isPresent()) {
+        if(seller.isEmpty()) {
             throw new NotFoundException("Vendedor con la id: " + postDto.getUser_id() + " no encontrado");
         }
         Random random = new Random();
@@ -56,6 +58,20 @@ public class PostServiceImpl implements IPostService{
             throw new BadRequestException("La publicación no tiene promo");
         }
         return save(postRequestDto);
+    }
+
+    @Override
+    public PromoPostCountDto getPromoPostCountBySellerId(Long userId) {
+        Optional<Seller> seller = sellerService.getSellerById(userId);
+        if (seller.isEmpty()) {
+            throw new NotFoundException("Vendedor con la id: " + userId+ " no encontrado");
+        }
+        List<Post> posts = postRepository.getPromoPostBySellerID(userId);
+        PromoPostCountDto promoPostCountDto = new PromoPostCountDto();
+        promoPostCountDto.setUser_id(userId);
+        promoPostCountDto.setUser_name(seller.get().getUser_name());
+        promoPostCountDto.setPromo_products_count((long) posts.size());
+        return promoPostCountDto;
     }
 
     public Product convertToProduct(ProductRequestDto dto){

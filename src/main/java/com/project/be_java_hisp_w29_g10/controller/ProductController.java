@@ -1,6 +1,7 @@
 package com.project.be_java_hisp_w29_g10.controller;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +27,10 @@ public class ProductController {
         postService.savePromo(postRequestDto);
         return new ResponseEntity<>("Publicación con promo creada exitosamente.", HttpStatus.OK);
     }
+    @GetMapping("/promo-post/count")
+    public ResponseEntity<PromoPostCountDto> getPromoPost(@RequestParam Long user_id){
+        PromoPostCountDto countDto = postService.getPromoPostCountBySellerId(user_id);
+        return new ResponseEntity<>(countDto, HttpStatus.OK);
+    }
+
 }
