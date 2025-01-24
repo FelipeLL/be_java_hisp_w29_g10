@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> notFoundException(NotFoundException e){
+    public ResponseEntity<?> notFoundException(NotFoundException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto, HttpStatus.NOT_FOUND);
     }
@@ -22,7 +22,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<?> conflictException(ConflictException e){
+    public ResponseEntity<?> conflictException(ConflictException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto, HttpStatus.CONFLICT);
     }

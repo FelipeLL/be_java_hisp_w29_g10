@@ -18,17 +18,17 @@ public class PostServiceImpl implements IPostService{
 
     private final IPostRepository postRepository;
     private final IProductService productService;
-    private final IUserService userService;
+    private final ISellerService sellerService;
 
-    public PostServiceImpl(IPostRepository postRepository, IProductService productService, IUserService userService) {
+    public PostServiceImpl(IPostRepository postRepository, IProductService productService, ISellerService sellerService) {
         this.postRepository = postRepository;
         this.productService = productService;
-        this.userService = userService;
+        this.sellerService = sellerService;
     }
 
     @Override
     public Post save(PostRequestDto postDto) {
-        Optional<Seller> seller = userService.getSellerById(postDto.getUser_id());
+        Optional<Seller> seller = sellerService.getSellerById(postDto.getUser_id());
         if(seller.isPresent()) {
             throw new NotFoundException("Vendedor con la id: " + postDto.getUser_id() + " no encontrado");
         }
