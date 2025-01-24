@@ -1,20 +1,22 @@
 package com.project.be_java_hisp_w29_g10.service;
 
 
-import com.project.be_java_hisp_w29_g10.dto.request.response.FollowedSellerDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.*;
 import com.project.be_java_hisp_w29_g10.entity.Follow;
+import com.project.be_java_hisp_w29_g10.entity.Post;
+import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.User;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
-import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
-import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
-import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
+import com.project.be_java_hisp_w29_g10.repository.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -23,13 +25,17 @@ public class UserServiceImpl implements IUserService{
     private final IFollowRepository followRepository;
     private final IFollowService followService;
     private final IFollowManagementService followManagementServicve;
+    private final IProductRepository productRepository;
+    private final IPostRepository postRepository;
 
-    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowService followService, IFollowManagementService followManagementServicve) {
+    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowService followService, IFollowManagementService followManagementServicve, IProductRepository productRepository, IPostRepository postRepository) {
         this.userRepository = userRepository;
         this.sellerRepository = sellerRepository;
         this.followRepository = followRepository;
         this.followService = followService;
         this.followManagementServicve = followManagementServicve;
+        this.productRepository = productRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -70,5 +76,47 @@ public class UserServiceImpl implements IUserService{
                 .map(sellerId -> new FollowedSellerDto(sellerId, followManagementServicve.getSellerName(sellerId)))
                 .toList();
         return new UserFollowedSellerDto(user.get().getUser_id(), user.get().getUser_name(), followedSellerDtos);
+    }
+
+    @Override
+    public RecentPostsResponseDto getRecentPostsByFollowedSellers(Long userId) {
+        // Verificar si el usuario existe
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new NotFoundException("Usuario con ID " + userId + " no encontrado.");
+        }
+
+        // Obtener vendedores que sigue el usuario
+        List<Long> followedSellers = followService.getSellersFollowedByUser(userId);
+
+        // Obtener publicaciones recientes
+        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+        List<PostResponseDto> recentPosts = followedSellers.stream()
+                .flatMap(sellerId -> postRepository.getPromoPostBySellerID(sellerId).stream())
+                .filter(post -> post.getDate().isAfter(twoWeeksAgo))
+                .sorted(Comparator.comparing(Post::getDate).reversed())
+                .map(post -> new PostResponseDto(
+                        post.getUser_id(),
+                        post.getPost_id(),
+                        post.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), // Ajuste de formato de fecha
+                        convertToProductResponse(post.getProduct_id()),
+                        post.getCategory(),
+                        post.getPrice()
+                ))
+                .collect(Collectors.toList());
+
+        // Devolver la respuesta en el formato esperado
+        return new RecentPostsResponseDto(userId, recentPosts);
+    }
+
+    private ProductResponseDto convertToProductResponse(Long productId) {
+        Product product = productRepository.getById(productId);
+        return new ProductResponseDto(
+                product.getProduct_id(),
+                product.getProduct_name(),
+                product.getType(),
+                product.getBrand(),
+                product.getColor(),
+                product.getNotes()
+        );
     }
 }
