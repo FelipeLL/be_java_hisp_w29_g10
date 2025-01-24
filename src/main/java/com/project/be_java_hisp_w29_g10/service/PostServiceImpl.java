@@ -143,9 +143,9 @@ public class PostServiceImpl implements IPostService{
     @Override
     public RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, String order) {
         List<PostResponseDto> posts = new ArrayList<>(recentPostsResponse.getPosts());
-        if (order.equals("name_asc")) {
+        if (order.equals("date_asc")) {
             posts.sort(Comparator.comparing(PostResponseDto::getDate));
-        } else if (order.equals("name_desc")) {
+        } else if (order.equals("date_desc")) {
             posts.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
         }else {
             throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
