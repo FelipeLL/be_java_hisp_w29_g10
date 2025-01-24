@@ -46,4 +46,9 @@ public class PostRepositoryImpl implements IPostRepository {
     public List<Post> getPromoPostBySellerID(Long userId) {
         return posts.stream().filter(post -> post.getUser_id().equals(userId) && post.getHas_promo()).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Post> getPostBySellerID(Long sellerId) {
+        return posts.stream().filter(post -> post.getUser_id().equals(sellerId)).collect(Collectors.toList());
+    }
 }

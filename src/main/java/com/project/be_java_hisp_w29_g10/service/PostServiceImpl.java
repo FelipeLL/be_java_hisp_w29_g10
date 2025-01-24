@@ -126,7 +126,7 @@ public class PostServiceImpl implements IPostService{
         // Obtener publicaciones recientes
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
         List<PostResponseDto> recentPosts = followedSellers.stream()
-                .flatMap(sellerId -> postRepository.getPromoPostBySellerID(sellerId).stream())
+                .flatMap(sellerId -> postRepository.getPostBySellerID(sellerId).stream())
                 .filter(post -> post.getDate().isAfter(twoWeeksAgo))
                 .sorted(Comparator.comparing(Post::getDate).reversed())
                 .map(post -> new PostResponseDto(
