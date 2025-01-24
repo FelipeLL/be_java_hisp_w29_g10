@@ -3,6 +3,8 @@ package com.project.be_java_hisp_w29_g10.service;
 import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FollowServiceImpl implements IFollowService {
     private final IFollowRepository followRepository;
@@ -17,4 +19,9 @@ public class FollowServiceImpl implements IFollowService {
         return followRepository.getFollowersOfSeller(sellerId).size();
     }
 
+    //Metodo para devolver la lista de seguidores de un vendedor(US3)
+    @Override
+    public List<Long> getFollowersOfSeller(Long sellerId) {
+        return followRepository.getFollowersOfSeller(sellerId);
+    }
 }

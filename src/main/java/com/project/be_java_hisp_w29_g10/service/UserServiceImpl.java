@@ -44,4 +44,9 @@ public class UserServiceImpl implements IUserService{
         return new ResponseMessageDto("El usuario "+userId+" a dejado de seguir al vendedor "+userIdToUnfollow);
     }
 
+    //Metodo para recuperar el nombre de un usuario(US3)
+    @Override
+    public String getUserName(Long userId) {
+        return userRepository.findById(userId).get().getUser_name();
+    }
 }

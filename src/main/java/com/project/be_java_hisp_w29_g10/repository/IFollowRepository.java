@@ -9,6 +9,6 @@ public interface IFollowRepository {
     Follow saveFollow(Long userId, Long userIdToFollow);
     Follow removeFollow(Follow followRelation);
     Optional<Follow> getFollowRelation(Long userId, Long userIdToFollow);
-    //Metodo para devolver una lista con el id de los seguidores de un vendedor(US2)
+    //Metodo para devolver una lista con el id de los seguidores de un vendedor(US2 y US3)
     List<Long> getFollowersOfSeller(Long sellerId);
 }
