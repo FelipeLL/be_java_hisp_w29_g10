@@ -2,7 +2,10 @@ package com.project.be_java_hisp_w29_g10.service;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.*;
+import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.response.ProductResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
+import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;

@@ -1,6 +1,8 @@
 package com.project.be_java_hisp_w29_g10.service;
 
-import com.project.be_java_hisp_w29_g10.dto.request.response.*;
+import com.project.be_java_hisp_w29_g10.dto.response.FollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.dto.response.ResponseMessageDto;
+import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.entity.Follow;
 import com.project.be_java_hisp_w29_g10.entity.User;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;

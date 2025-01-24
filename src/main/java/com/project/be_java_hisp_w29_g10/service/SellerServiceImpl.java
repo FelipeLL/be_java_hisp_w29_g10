@@ -1,9 +1,8 @@
 package com.project.be_java_hisp_w29_g10.service;
 
-import com.project.be_java_hisp_w29_g10.dto.request.response.FollowedSellerDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.FollowerDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.FollowersCountDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.SellerFollowersDto;
+import com.project.be_java_hisp_w29_g10.dto.response.FollowerDto;
+import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
+import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
