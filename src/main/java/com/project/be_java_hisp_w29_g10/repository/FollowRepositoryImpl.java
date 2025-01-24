@@ -9,14 +9,14 @@ import java.util.Optional;
 
 @Repository
 public class FollowRepositoryImpl implements  IFollowRepository {
-    private List<Follow> follows;
+   private List<Follow> follows;
 
 
 
     public FollowRepositoryImpl(){
         follows = new ArrayList<>(List.of(
-                new Follow(1L,6L),
                 new Follow(1L,2L),
+                new Follow(1L,1L),
                 new Follow(1L,10L),
                 new Follow(1L,9L),
                 new Follow(1L,3L),

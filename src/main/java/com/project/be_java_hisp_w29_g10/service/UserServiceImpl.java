@@ -1,22 +1,17 @@
 package com.project.be_java_hisp_w29_g10.service;
 
-
-import com.project.be_java_hisp_w29_g10.dto.request.response.FollowedSellerDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.*;
 import com.project.be_java_hisp_w29_g10.entity.Follow;
 import com.project.be_java_hisp_w29_g10.entity.User;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
-import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
-import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
-import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
+import com.project.be_java_hisp_w29_g10.repository.*;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -26,12 +21,13 @@ public class UserServiceImpl implements IUserService{
     private final IFollowService followService;
     private final IFollowManagementService followManagementServicve;
 
-    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowService followService, IFollowManagementService followManagementServicve) {
+
+    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowService followService, IFollowManagementService followManagementService) {
         this.userRepository = userRepository;
         this.sellerRepository = sellerRepository;
         this.followRepository = followRepository;
         this.followService = followService;
-        this.followManagementServicve = followManagementServicve;
+        this.followManagementServicve = followManagementService;
     }
 
     @Override
@@ -88,4 +84,5 @@ public class UserServiceImpl implements IUserService{
         userFollowedSeller.setFollowed(followed);
         return userFollowedSeller;
     }
+
 }

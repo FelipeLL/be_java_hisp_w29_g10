@@ -2,10 +2,12 @@ package com.project.be_java_hisp_w29_g10.controller;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/products")
@@ -31,6 +33,11 @@ public class ProductController {
     public ResponseEntity<PromoPostCountDto> getPromoPost(@RequestParam Long user_id){
         PromoPostCountDto countDto = postService.getPromoPostCountBySellerId(user_id);
         return new ResponseEntity<>(countDto, HttpStatus.OK);
+    }
+    @GetMapping("/followed/{userId}/list")
+    public ResponseEntity<?> getRecentPostsByFollowedSellers(@PathVariable Long userId) {
+        RecentPostsResponseDto response = postService.getRecentPostsByFollowedSellers(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
