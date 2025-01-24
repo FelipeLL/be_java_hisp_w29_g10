@@ -24,4 +24,9 @@ public class FollowServiceImpl implements IFollowService {
     public List<Long> getFollowersOfSeller(Long sellerId) {
         return followRepository.getFollowersOfSeller(sellerId);
     }
+    //Metodo para devolver la lista de vendedores que sigue de un usuario(US4)
+    @Override
+    public List<Long> getSellersFollowedByUser(Long id) {
+        return followRepository.getSellersFollowedByUser(id);
+    }
 }

@@ -3,6 +3,7 @@ package com.project.be_java_hisp_w29_g10.controller;
 import com.project.be_java_hisp_w29_g10.dto.request.response.FollowersCountDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.dto.request.response.SellerFollowersDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.UserFollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.service.ISellerService;
 import com.project.be_java_hisp_w29_g10.service.IUserService;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,11 @@ public class UserController {
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId) {
         return new ResponseEntity<>(sellerService.getSellerAndFollowers(userId), HttpStatus.OK);
+    }
+
+    //ENDPOINT PARA OBTENER EL NOMBRE DE UN VENDEDOR(US 04)
+    @GetMapping("/{userId}/followed/list")
+    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.getUserAndFollowedSellers(userId), HttpStatus.OK);
     }
 }
