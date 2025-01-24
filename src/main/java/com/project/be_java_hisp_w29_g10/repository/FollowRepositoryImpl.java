@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public class FollowRepositoryImpl implements  IFollowRepository {
-   final private List<Follow> follows;
+   private List<Follow> follows;
 
 
 
