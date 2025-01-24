@@ -4,7 +4,9 @@ import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
+import com.project.be_java_hisp_w29_g10.entity.Seller;
 import com.project.be_java_hisp_w29_g10.exception.BadRequestException;
+import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,20 @@ public class PostServiceImpl implements IPostService{
 
     private final IPostRepository postRepository;
     private final IProductService productService;
+    private final ISellerService sellerService;
 
-    public PostServiceImpl(IPostRepository postRepository, IProductService productService){
+    public PostServiceImpl(IPostRepository postRepository, IProductService productService, ISellerService sellerService) {
         this.postRepository = postRepository;
         this.productService = productService;
+        this.sellerService = sellerService;
     }
 
     @Override
     public Post save(PostRequestDto postDto) {
+        Optional<Seller> seller = sellerService.getSellerById(postDto.getUser_id());
+        if(seller.isPresent()) {
+            throw new NotFoundException("Vendedor con la id: " + postDto.getUser_id() + " no encontrado");
+        }
         Random random = new Random();
         long postId;
         Optional<Post> existPost;
@@ -45,7 +53,7 @@ public class PostServiceImpl implements IPostService{
     @Override
     public Post savePromo(PostRequestDto postRequestDto) {
         if (!postRequestDto.getHas_promo()){
-            throw new BadRequestException("The post does not have a promo");
+            throw new BadRequestException("La publicación no tiene promo");
         }
         return save(postRequestDto);
     }

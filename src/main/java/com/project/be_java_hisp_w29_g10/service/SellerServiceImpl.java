@@ -46,4 +46,8 @@ public class SellerServiceImpl implements ISellerService{
                 .toList();
         return new SellerFollowersDto(seller.get().getId_seller(), seller.get().getUser_name(), followerDtos);
     }
+    @Override
+    public Optional<Seller> getSellerById(Long userId) {
+        return sellerRepository.findById(userId);
+    }
 }
