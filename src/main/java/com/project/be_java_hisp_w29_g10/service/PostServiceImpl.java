@@ -30,7 +30,7 @@ public class PostServiceImpl implements IPostService{
     public Post save(PostRequestDto postDto) {
         Optional<Seller> seller = userService.getSellerById(postDto.getUser_id());
         if(seller.isPresent()) {
-            throw new NotFoundException("Seller not found");
+            throw new NotFoundException("Vendedor con la id: " + postDto.getUser_id() + " no encontrado");
         }
         Random random = new Random();
         long postId;
@@ -53,7 +53,7 @@ public class PostServiceImpl implements IPostService{
     @Override
     public Post savePromo(PostRequestDto postRequestDto) {
         if (!postRequestDto.getHas_promo()){
-            throw new BadRequestException("The post does not have a promo");
+            throw new BadRequestException("La publicación no tiene promo");
         }
         return save(postRequestDto);
     }
