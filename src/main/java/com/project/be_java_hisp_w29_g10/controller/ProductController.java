@@ -35,8 +35,11 @@ public class ProductController {
         return new ResponseEntity<>(countDto, HttpStatus.OK);
     }
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> getRecentPostsByFollowedSellers(@PathVariable Long userId) {
+    public ResponseEntity<?> getRecentPostsByFollowedSellers(@PathVariable Long userId, @RequestParam(required = false) String order) {
         RecentPostsResponseDto response = postService.getRecentPostsByFollowedSellers(userId);
+        if (order != null){
+            response = postService.OrderByDate(response,order);
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

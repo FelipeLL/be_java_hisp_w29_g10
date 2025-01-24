@@ -2,16 +2,12 @@ package com.project.be_java_hisp_w29_g10.service;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.PostResponseDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.ProductResponseDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.PromoPostCountDto;
-import com.project.be_java_hisp_w29_g10.dto.request.response.RecentPostsResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.request.response.*;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
 import com.project.be_java_hisp_w29_g10.exception.BadRequestException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
-import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import com.project.be_java_hisp_w29_g10.repository.IProductRepository;
 import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
@@ -19,10 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -145,6 +138,21 @@ public class PostServiceImpl implements IPostService{
 
         // Devolver la respuesta en el formato esperado
         return new RecentPostsResponseDto(userId, recentPosts);
+    }
+
+    @Override
+    public RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, String order) {
+        List<PostResponseDto> posts = new ArrayList<>(recentPostsResponse.getPosts());
+        if (order.equals("name_asc")) {
+            posts.sort(Comparator.comparing(PostResponseDto::getDate));
+        } else if (order.equals("name_desc")) {
+            posts.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
+        }else {
+            throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
+        }
+
+        recentPostsResponse.setPosts(posts);
+        return recentPostsResponse;
     }
 
     private ProductResponseDto convertToProductResponse(Long productId) {
