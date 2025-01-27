@@ -10,6 +10,7 @@ import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
 import com.project.be_java_hisp_w29_g10.exception.BadRequestException;
+import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import com.project.be_java_hisp_w29_g10.repository.IProductRepository;
@@ -58,7 +59,9 @@ public class PostServiceImpl implements IPostService{
         } while (existPost.isPresent());
 
         newPost = convertToPost(postDto, postId);
-
+        if(productRepository.getById(postDto.getProduct().getProduct_id())!=null) {
+            throw new ConflictException("El producto con id: " + postDto.getProduct().getProduct_id() + " ya existe");
+        }
         productRepository.save(newProduct);
 
         return postRepository.save(newPost);
