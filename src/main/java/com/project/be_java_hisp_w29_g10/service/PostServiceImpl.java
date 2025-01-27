@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements IPostService{
 
     private final IPostRepository postRepository;
-    private final IProductService productService;
     private final ISellerService sellerService;
     private final IUserRepository userRepository;
     private final IFollowService followService;
@@ -33,9 +32,8 @@ public class PostServiceImpl implements IPostService{
 
 
 
-    public PostServiceImpl(IPostRepository postRepository, IProductService productService, ISellerService sellerService, IUserRepository userRepository, IFollowService followService, IProductRepository productRepository) {
+    public PostServiceImpl(IPostRepository postRepository, ISellerService sellerService, IUserRepository userRepository, IFollowService followService, IProductRepository productRepository) {
         this.postRepository = postRepository;
-        this.productService = productService;
         this.sellerService = sellerService;
         this.userRepository = userRepository;
         this.followService = followService;
@@ -61,7 +59,7 @@ public class PostServiceImpl implements IPostService{
 
         newPost = convertToPost(postDto, postId);
 
-        productService.save(newProduct);
+        productRepository.save(newProduct);
 
         return postRepository.save(newPost);
     }
