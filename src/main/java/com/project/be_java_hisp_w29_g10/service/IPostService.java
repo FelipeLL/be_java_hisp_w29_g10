@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface IPostService {
     Post save(PostRequestDto postDto);
+    Boolean delete(Long post_id);
     Post savePromo(PostRequestDto postRequestDto);
     List<PromoPostResponseDto> getPostsBySellerId(Long sellerId, Boolean hasPromo, Integer category);
     PromoPostCountDto getPromoPostCountBySellerId(Long userId);

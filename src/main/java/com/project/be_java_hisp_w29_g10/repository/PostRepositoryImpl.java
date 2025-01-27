@@ -45,6 +45,12 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
     @Override
+    public Boolean delete(Post post) {
+        posts.remove(post);
+        return true;
+    }
+
+    @Override
     public List<Post> getPromoPostBySellerID(Long userId) {
         return posts.stream().filter(post -> post.getUser_id().equals(userId) && post.getHas_promo()).collect(Collectors.toList());
     }

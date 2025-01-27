@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface IPostRepository {
     Optional<Post> getById(Long id);
     Post save(Post newPost);
+    Boolean delete(Post post);
 
     List<Post> getPromoPostBySellerID(Long userId);
     List<Post> getAll(Long sellerId, Boolean hasPromo, Integer category);
