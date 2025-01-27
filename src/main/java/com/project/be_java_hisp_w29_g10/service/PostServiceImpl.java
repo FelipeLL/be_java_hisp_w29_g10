@@ -70,8 +70,13 @@ public class PostServiceImpl implements IPostService{
         if (post.isEmpty()){
             throw new NotFoundException("El post con id: "+post_id+" no existe.");
         }
-        return  postRepository.delete(post.get());
+        Product product = productRepository.getById(post.get().getProduct_id());
+        if (product == null){
+            throw new NotFoundException("Error al buscar el producto asociado.");
+        }
 
+        productRepository.delete(product);
+        return  postRepository.delete(post.get());
     }
 
     @Override
