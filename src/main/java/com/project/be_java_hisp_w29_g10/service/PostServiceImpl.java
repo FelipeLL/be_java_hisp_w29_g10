@@ -2,10 +2,7 @@ package com.project.be_java_hisp_w29_g10.service;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
-import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
-import com.project.be_java_hisp_w29_g10.dto.response.ProductResponseDto;
-import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
-import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
+import com.project.be_java_hisp_w29_g10.dto.response.*;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
@@ -76,6 +73,27 @@ public class PostServiceImpl implements IPostService{
     }
 
     @Override
+    public List<PromoPostResponseDto> getPostsBySellerId(Long sellerId, Boolean hasPromo, Integer category) {
+        Optional<Seller> seller = sellerService.getSellerById(sellerId);
+        if (seller.isEmpty()) {
+            throw new NotFoundException("Vendedor con la id: " + sellerId + " no encontrado");
+        }
+
+        List<Post> posts = postRepository.getAll(sellerId, hasPromo, category);
+
+        return posts.stream().map(post -> new PromoPostResponseDto(
+                post.getUser_id(),
+                post.getPost_id(),
+                post.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                convertToProductResponse(post.getProduct_id()),
+                post.getCategory(),
+                post.getPrice(),
+                post.getHas_promo(),
+                post.getDiscount()
+        )).collect(Collectors.toList());
+    }
+
+    @Override
     public PromoPostCountDto getPromoPostCountBySellerId(Long userId) {
         Optional<Seller> seller = sellerService.getSellerById(userId);
         if (seller.isEmpty()) {
@@ -127,7 +145,7 @@ public class PostServiceImpl implements IPostService{
         // Obtener publicaciones recientes
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
         List<PostResponseDto> recentPosts = followedSellers.stream()
-                .flatMap(sellerId -> postRepository.getPostBySellerID(sellerId).stream())
+                .flatMap(sellerId -> postRepository.getPostsBySellerID(sellerId).stream())
                 .filter(post -> post.getDate().isAfter(twoWeeksAgo))
                 .sorted(Comparator.comparing(Post::getDate).reversed())
                 .map(post -> new PostResponseDto(

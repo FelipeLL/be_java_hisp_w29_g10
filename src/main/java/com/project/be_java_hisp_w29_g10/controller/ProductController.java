@@ -1,12 +1,16 @@
 package com.project.be_java_hisp_w29_g10.controller;
 
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PromoPostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -42,5 +46,8 @@ public class ProductController {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+    @GetMapping("/seller/{sellerId}/list")
+    public ResponseEntity<List<PromoPostResponseDto>> getPostsBySeller(@PathVariable Long sellerId, @RequestParam(required = false) Boolean hasPromo, @RequestParam(required = false) Integer category){
+        return new ResponseEntity<>(postService.getPostsBySellerId(sellerId, hasPromo, category), HttpStatus.OK);
+    }
 }

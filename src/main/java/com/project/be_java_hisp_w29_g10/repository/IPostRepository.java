@@ -11,6 +11,6 @@ public interface IPostRepository {
     Post save(Post newPost);
 
     List<Post> getPromoPostBySellerID(Long userId);
-
-    List<Post> getPostBySellerID(Long sellerId);
+    List<Post> getAll(Long sellerId, Boolean hasPromo, Integer category);
+    List<Post> getPostsBySellerID(Long sellerId);
 }
