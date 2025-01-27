@@ -44,12 +44,12 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public ResponseMessageDto unfollowSeller(Long userId, Long userIdToUnfollow) {
-        Follow followRelation = followRepository.getFollowRelation(userId, userIdToUnfollow).get();
+        Optional<Follow> followRelation = followRepository.getFollowRelation(userId, userIdToUnfollow);
         if (userRepository.findById(userId).isEmpty()){ throw new NotFoundException("No se encontró el usuario con el ID: "+userId);}
         if (sellerRepository.findById(userIdToUnfollow).isEmpty()){ throw new NotFoundException("No se encontró el vendedor con el ID: "+userIdToUnfollow);}
-        if (null == followRelation){ throw new NotFoundException("El usuario con ID: "+userId+" no puede dejar se seguir al vendedor con ID: "+userIdToUnfollow+", ya que no lo sigue.");}
+        if (followRelation.isEmpty()){ throw new NotFoundException("El usuario con ID: "+userId+" no puede dejar se seguir al vendedor con ID: "+userIdToUnfollow+", ya que no lo sigue.");}
 
-        followRepository.removeFollow(followRelation);
+        followRepository.removeFollow(followRelation.get());
         return new ResponseMessageDto("El usuario "+userId+" a dejado de seguir al vendedor "+userIdToUnfollow);
     }
 
