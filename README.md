@@ -73,3 +73,29 @@ Toda la documentación del proyecto se aloja en **Notion**, lo cual nos permite:
 - Juan Felipe Ladino Lozano
 - Pablo Ezequiel Viano
 - Silvia Juliana Moreno Roa
+
+## ⚙️ Arquitectura Multicapa
+- **Capa de Entidad (entity):** Esta capa contiene las clases que representan los objetos de negocio de la aplicación. Cada clase en esta capa define los atributos de los datos que se manejan.
+- **Capa de Repositorio (repository):** Esta capa se encarga de la interacción con la base de datos. Define interfaces y sus implementaciones para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las entidades.
+- **Capa de Servicio (service):** Esta capa contiene la lógica de negocio de la aplicación. Los servicios se encargan de procesar los datos recibidos de los controladores, aplicar las reglas de negocio y llamar a los repositorios. Actúan como intermediarios entre los controladores y los repositorios.
+- **Capa de Controlador (controller):** Esta capa maneja las solicitudes HTTP entrantes y las dirige a los servicios apropiados. Define los endpoints de la API y se encarga de la lógica de enrutamiento y respuesta. Los controladores reciben las solicitudes del cliente, llaman a los servicios necesarios y devuelven las respuestas adecuadas.
+
+## 🧑🏻‍💻 Uso de DTOs
+Un DTO (Data Transfer Object) es un objeto que se utiliza para transferir datos entre diferentes capas de una aplicación. Los DTOs son útiles para encapsular los datos y reducir el número de llamadas entre el cliente y el servidor, lo que puede mejorar el rendimiento y la eficiencia de la aplicación. Además, ayudan a mantener la separación de preocupaciones y a evitar la exposición directa de las entidades del modelo de dominio
+
+### 📩 Dtos de Request
+- **PostRequestDto:** Este DTO encapsula los datos de una solicitud de publicación.
+- **ProductRequestDto:** Este DTO encapsula los datos de una solicitud de producto.
+
+### 📨 Dtos de Response
+- **FollowersCountDto:** Este DTO encapsula los datos de un vendedor y el conteo de sus seguidores.
+- **FollowerDto:** Este DTO encapsula los datos de un seguidor.
+- **SellerFollowersDto:** Este DTO encapsula los datos de un vendedor y sus seguidores.
+- **FollowedSellerDto:** Este DTO encapsula los datos de un vendedor seguido.
+- **UserFollowedSellerDto:** Este DTO encapsula los datos de un usuario y los vendedores que sigue.
+- **ResponseMessageDto:** Este DTO encapsula un mensaje de respuesta.
+- **RecentPostsResponseDto:** Este DTO encapsula los datos de las publicaciones recientes de un usuario.
+- **PromoPostCountDto:** Este DTO encapsula los datos de un usuario y el conteo de productos en promoción.
+- **ProductResponseDto:** Este DTO encapsula los datos de un producto.
+- **PostResponseDto:** Este DTO encapsula los datos de una publicación.
+- **ExceptionDto:** Este DTO encapsula un mensaje de excepción.
