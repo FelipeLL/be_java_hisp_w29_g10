@@ -65,6 +65,21 @@ public class PostServiceImpl implements IPostService{
     }
 
     @Override
+    public Boolean delete(Long post_id) {
+        Optional<Post> post = postRepository.getById(post_id);
+        if (post.isEmpty()){
+            throw new NotFoundException("El post con id: "+post_id+" no existe.");
+        }
+        Product product = productRepository.getById(post.get().getProduct_id());
+        if (product == null){
+            throw new NotFoundException("Error al buscar el producto asociado.");
+        }
+
+        productRepository.delete(product);
+        return  postRepository.delete(post.get());
+    }
+
+    @Override
     public Post savePromo(PostRequestDto postRequestDto) {
         if (!postRequestDto.getHas_promo()){
             throw new BadRequestException("La publicación no tiene promo");

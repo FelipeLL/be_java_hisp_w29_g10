@@ -35,4 +35,10 @@ public class ProductRepositoryImpl implements IProductRepository {
         products.add(newProduct);
         return newProduct;
     }
+
+    @Override
+    public Boolean delete(Product product) {
+        products.remove(product);
+        return true;
+    }
 }

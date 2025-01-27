@@ -28,6 +28,11 @@ public class ProductController {
         postService.save(postDto);
         return new ResponseEntity<>("Publicación creada exitosamente.", HttpStatus.OK);
     }
+    @DeleteMapping("/post/{post_id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long post_id){
+        postService.delete(post_id);
+        return ResponseEntity.ok("Publicación eliminada exitosamente.");
+    }
     @PostMapping("/promo-post")
     public ResponseEntity<String> savePromoPost(@RequestBody PostRequestDto postRequestDto){
         postService.savePromo(postRequestDto);
