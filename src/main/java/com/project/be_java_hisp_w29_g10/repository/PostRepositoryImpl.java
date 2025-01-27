@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -48,7 +50,25 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
     @Override
-    public List<Post> getPostBySellerID(Long sellerId) {
+    public List<Post> getAll(Long sellerId, Boolean hasPromo, Integer category) {
+        Predicate<Post> predicate = post -> true;
+
+        if(sellerId != null){
+            predicate = predicate.and(post -> Objects.equals(post.getUser_id(), sellerId));
+        }
+        if(hasPromo != null){
+            predicate = predicate.and(post -> post.getHas_promo() == hasPromo);
+        }
+
+        if(category != null){
+            predicate = predicate.and(post -> Objects.equals(post.getCategory(), category));
+        }
+
+        return posts.stream().filter(predicate).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Post> getPostsBySellerID(Long sellerId) {
         return posts.stream().filter(post -> post.getUser_id().equals(sellerId)).collect(Collectors.toList());
     }
 }
