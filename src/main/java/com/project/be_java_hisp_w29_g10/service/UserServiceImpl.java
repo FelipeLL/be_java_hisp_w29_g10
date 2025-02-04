@@ -20,16 +20,14 @@ public class UserServiceImpl implements IUserService{
     private final IUserRepository userRepository;
     private final ISellerRepository sellerRepository;
     private final IFollowRepository followRepository;
-    private final IFollowService followService;
-    private final IFollowManagementService followManagementServicve;
+    private final IFollowManagementService followManagementService;
 
 
-    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowService followService, IFollowManagementService followManagementService) {
+    public UserServiceImpl(IUserRepository userRepository, ISellerRepository sellerRepository, IFollowRepository followRepository, IFollowManagementService followManagementService) {
         this.userRepository = userRepository;
         this.sellerRepository = sellerRepository;
         this.followRepository = followRepository;
-        this.followService = followService;
-        this.followManagementServicve = followManagementService;
+        this.followManagementService = followManagementService;
     }
 
     @Override
@@ -61,13 +59,11 @@ public class UserServiceImpl implements IUserService{
     //Metodo para devolver el usuario y la lista de vendedores que sigue(US4)
     @Override
     public UserFollowedSellerDto getUserAndFollowedSellers(Long userId) {
-        if(followService.getSellersFollowedByUser(userId).isEmpty()) {
-            throw new NotFoundException("No se encontro el usuario con el ID: "+userId);
-        }
-        List<Long> sellersFollowed = followService.getSellersFollowedByUser(userId);
         Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()){throw new NotFoundException("No se encontro el usuario con el ID: "+userId);}
+        List<Long> sellersFollowed = followRepository.getSellersFollowedByUser(userId);
         List<FollowedSellerDto> followedSellerDtos = sellersFollowed.stream()
-                .map(sellerId -> new FollowedSellerDto(sellerId, followManagementServicve.getSellerName(sellerId)))
+                .map(sellerId -> new FollowedSellerDto(sellerId, followManagementService.getSellerName(sellerId)))
                 .toList();
         return new UserFollowedSellerDto(user.get().getUser_id(), user.get().getUser_name(), followedSellerDtos);
     }

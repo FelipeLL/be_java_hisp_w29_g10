@@ -5,7 +5,9 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
+import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
 import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
+import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,36 +17,36 @@ import java.util.Optional;
 
 @Service
 public class SellerServiceImpl implements ISellerService{
-    private final IFollowService followService;
+    private final IFollowRepository followRepository;
     private final ISellerRepository sellerRepository;
-    private final UserServiceImpl userServiceImpl;
+    private final IUserRepository userRepository;
 
-    public SellerServiceImpl(IFollowService followService, ISellerRepository sellerRepository, UserServiceImpl userServiceImpl) {
-        this.followService = followService;
+    public SellerServiceImpl(IFollowRepository followRepository, ISellerRepository sellerRepository, IUserRepository userRepository) {
+        this.followRepository = followRepository;
         this.sellerRepository = sellerRepository;
-        this.userServiceImpl = userServiceImpl;
+        this.userRepository = userRepository;
     }
 
     //Metodo para devolver la cantidad de seguidores de un vendedor(US2)
     @Override
     public FollowersCountDto getCountFollowers(Long sellerId) {
-        if(followService.getFollowersOfSeller(sellerId).isEmpty()) {
+        if(followRepository.getFollowersOfSeller(sellerId).isEmpty()) {
             throw new NotFoundException("No se encontro el vendedor con el ID: "+sellerId);
         }
         Optional<Seller> seller = sellerRepository.findById(sellerId);
-        return new FollowersCountDto (seller.get().getId_seller(),seller.get().getUser_name(),followService.getFollowersOfSeller(sellerId).size());
+        return new FollowersCountDto (seller.get().getId_seller(),seller.get().getUser_name(),followRepository.getFollowersOfSeller(sellerId).size());
     }
 
     //Metodo para devolver al vendedor y su lista de seguidores(US3)
     @Override
     public SellerFollowersDto getSellerAndFollowers(Long sellerId) {
-        if(followService.getFollowersOfSeller(sellerId).isEmpty()) {
+        if(followRepository.getFollowersOfSeller(sellerId).isEmpty()) {
             throw new NotFoundException("No se encontro el vendedor con el ID: "+sellerId);
         }
-        List<Long> followers = followService.getFollowersOfSeller(sellerId);
+        List<Long> followers = followRepository.getFollowersOfSeller(sellerId);
         Optional<Seller> seller = sellerRepository.findById(sellerId);
         List<FollowerDto> followerDtos = followers.stream()
-                .map(followerId -> new FollowerDto(followerId, userServiceImpl.getUserName(followerId)))
+                .map(followerId -> new FollowerDto(followerId, userRepository.findById(followerId).get().getUser_name()))
                 .toList();
         return new SellerFollowersDto(seller.get().getId_seller(), seller.get().getUser_name(), followerDtos);
     }
