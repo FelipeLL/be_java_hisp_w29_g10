@@ -64,7 +64,10 @@ public class UserController {
 
     //ENDPOINT PARA OBTENER EL NOMBRE DE UN VENDEDOR(US 04)
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(
+            @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
+            @RequestParam(required = false) @ValidNameOrderType String order
+    ) {
         UserFollowedSellerDto userFollowedSeller = userService.getUserAndFollowedSellers(userId);
         if (order != null){
             userFollowedSeller = userService.OrderByName(userFollowedSeller,order);
