@@ -33,7 +33,10 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<ResponseMessageDto> unfollowSeller(@PathVariable Long userId, @PathVariable Long userIdToUnfollow) {
+    public ResponseEntity<ResponseMessageDto> unfollowSeller(
+            @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userIdToUnfollow
+    ) {
         return ResponseEntity.ok(userService.unfollowSeller(userId, userIdToUnfollow));
     }
 
