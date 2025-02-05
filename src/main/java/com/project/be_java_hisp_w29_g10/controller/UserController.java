@@ -42,7 +42,9 @@ public class UserController {
 
     //ENDPOINT PARA OBTENER LA CANTIDAD DE SEGUIDORES DE UN VENDEDOR(US 02)
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<FollowersCountDto> getCountFollowers(@PathVariable Long userId) {
+    public ResponseEntity<FollowersCountDto> getCountFollowers(
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userId
+    ) {
         return new ResponseEntity<>(sellerService.getCountFollowers(userId), HttpStatus.OK);
     }
 
