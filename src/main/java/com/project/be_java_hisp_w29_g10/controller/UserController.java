@@ -6,6 +6,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.service.ISellerService;
 import com.project.be_java_hisp_w29_g10.service.IUserService;
+import com.project.be_java_hisp_w29_g10.validator.ValidNameOrderType;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,10 @@ public class UserController {
 
     //ENDPOINT PARA OBTENER A UN VENDEDOR Y SU LISTA DE SEGUIDORES(US 03)
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userId,
+            @RequestParam(required = false) @ValidNameOrderType String order
+    ) {
         SellerFollowersDto sellerFollowersDto = sellerService.getSellerAndFollowers(userId);
         if (order != null) {
             sellerFollowersDto = sellerService.OrderByName(sellerFollowersDto,order);
