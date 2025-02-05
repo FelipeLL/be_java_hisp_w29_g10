@@ -100,10 +100,10 @@ class PostServiceImplTest {
 
         // Act and assert
         RecentPostsResponseDto orderAsc = postService.OrderByDate(recentPosts, "date_asc");
-        assertEquals(postsAsc, orderAsc.getPosts(), "La ordenación ascendente no funciona correctamente");
+        assertEquals(postsAsc, orderAsc.getPosts());
 
         RecentPostsResponseDto orderDesc = postService.OrderByDate(recentPosts, "date_desc");
-        assertEquals(postsDesc, orderDesc.getPosts(), "La ordenación descendente no funciona correctamente");
+        assertEquals(postsDesc, orderDesc.getPosts());
     }
 
     RecentPostsResponseDto generateRecentPost(){
