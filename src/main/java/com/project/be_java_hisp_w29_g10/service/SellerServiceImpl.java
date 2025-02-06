@@ -31,7 +31,7 @@ public class SellerServiceImpl implements ISellerService{
     //Metodo para devolver la cantidad de seguidores de un vendedor(US2)
     @Override
     public FollowersCountDto getCountFollowers(Long sellerId) {
-        if(followRepository.getFollowersOfSeller(sellerId).isEmpty()) {
+        if(sellerRepository.findById(sellerId).isEmpty()) {
             throw new NotFoundException("No se encontro el vendedor con el ID: "+sellerId);
         }
         Optional<Seller> seller = sellerRepository.findById(sellerId);
@@ -41,7 +41,7 @@ public class SellerServiceImpl implements ISellerService{
     //Metodo para devolver al vendedor y su lista de seguidores(US3)
     @Override
     public SellerFollowersDto getSellerAndFollowers(Long sellerId) {
-        if(followRepository.getFollowersOfSeller(sellerId).isEmpty()) {
+        if (sellerRepository.findById(sellerId).isEmpty()) {
             throw new NotFoundException("No se encontro el vendedor con el ID: "+sellerId);
         }
         List<Long> followers = followRepository.getFollowersOfSeller(sellerId);
