@@ -54,7 +54,7 @@ class SellerServiceImplTest {
     void getCountFollowersThrowsNotFoundExceptionTest() {
         //arrange
         Long sellerId = 1L;
-        when(followRepository.getFollowersOfSeller(sellerId)).thenReturn(List.of());
+        when(sellerRepository.findById(sellerId)).thenReturn(Optional.empty());
         //act & assert
         assertThrows(NotFoundException.class, () -> sellerService.getCountFollowers(sellerId));
     }
