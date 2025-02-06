@@ -98,12 +98,13 @@ class PostServiceImplTest {
 
         // Act
         RecentPostsResponseDto response = postService.getRecentPostsByFollowedSellers(userId);
+        PostResponseDto returnedPost = response.getPosts().getFirst();
+
 
         // Assert
         assertNotNull(response);
         assertEquals(1, response.getPosts().size());
 
-        PostResponseDto returnedPost = response.getPosts().get(0);
         assertEquals(recentPost.getPost_id(), returnedPost.getPost_id());
         assertTrue(LocalDate.parse(returnedPost.getDate(), java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                 .isAfter(LocalDate.now().minusWeeks(2)));
