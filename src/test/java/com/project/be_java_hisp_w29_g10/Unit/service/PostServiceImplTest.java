@@ -21,10 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -139,5 +136,66 @@ class PostServiceImplTest {
         // Assert
         assertNotNull(response);
         assertTrue(response.getPosts().isEmpty());
+    }
+
+    @Test
+    @DisplayName("US9 - Type - Happy Path")
+    void orderByDateTypeOkTest() {
+        //arrange
+        RecentPostsResponseDto recentPostDto = generateRecentPost();
+        String order = "date_asc";
+        //act
+        RecentPostsResponseDto recentPostsOrder = postService.OrderByDate(recentPostDto,order);
+        //assert
+        assertNotEquals(null,recentPostsOrder);
+    }
+
+    @Test
+    @DisplayName("US9 - Type - Throw Not Found Exception")
+    void orderByDateTypeThrowNotFoundExceptionTest(){
+        //arrange
+        RecentPostsResponseDto recentPostDto = generateRecentPost();
+        String order = "dateasc";
+        //act and assert
+        assertThrows(NotFoundException.class,() -> {postService.OrderByDate(recentPostDto,order);});
+    }
+
+    @Test
+    @DisplayName("US9 - Happy Path")
+    void orderByDateOkTest() {
+        // Arrange
+        RecentPostsResponseDto recentPostsDto = generateRecentPost();
+
+        // Crear copias independientes de las listas de posts
+        List<PostResponseDto> originalPosts = new ArrayList<>(recentPostsDto.getPosts());
+
+        // Ascendente
+        List<PostResponseDto> postsAsc = new ArrayList<>(originalPosts);
+        postsAsc.sort(Comparator.comparing(PostResponseDto::getDate));
+
+        // Descendente
+        List<PostResponseDto> postsDesc = new ArrayList<>(originalPosts);
+        postsDesc.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
+
+        // Act and assert
+        RecentPostsResponseDto orderAsc = postService.OrderByDate(recentPostsDto, "date_asc");
+        assertEquals(postsAsc, orderAsc.getPosts());
+
+        RecentPostsResponseDto orderDesc = postService.OrderByDate(recentPostsDto, "date_desc");
+        assertEquals(postsDesc, orderDesc.getPosts());
+    }
+
+    RecentPostsResponseDto generateRecentPost(){
+        List<PostResponseDto> posts = new ArrayList<>();
+        ProductResponseDto product1 = new ProductResponseDto(1L, "Producto 1", "Tipo A", "Marca A", "Rojo", "Notas del producto 1");
+        PostResponseDto post1 = new PostResponseDto(101L, 201L, "2023-10-01", product1, 1, 19.99);
+        posts.add(post1);
+        ProductResponseDto product2 = new ProductResponseDto(2L, "Producto 2", "Tipo B", "Marca B", "Azul", "Notas del producto 2");
+        PostResponseDto post2 = new PostResponseDto(102L, 202L, "2023-10-02", product2, 2, 29.99);
+        posts.add(post2);
+        ProductResponseDto product3 = new ProductResponseDto(3L, "Producto 3", "Tipo C", "Marca C", "Verde", "Notas del producto 3");
+        PostResponseDto post3 = new PostResponseDto(103L, 203L, "2023-10-03", product3, 3, 39.99);
+        posts.add(post3);
+        return new RecentPostsResponseDto(1001L, posts);
     }
 }
