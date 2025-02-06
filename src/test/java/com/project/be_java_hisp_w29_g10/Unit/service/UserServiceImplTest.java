@@ -40,7 +40,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    @DisplayName("US1 - Happy Path")
+    @DisplayName("T0001 - US1 - Happy Path")
     void followSellerOkTest() {
         //arrange
         Long userId = 1L;
@@ -59,7 +59,7 @@ class UserServiceImplTest {
         assertEquals(expectedMessage, foundMessage);
     }
     @Test
-    @DisplayName("US1 - User Throw Not Found Exception")
+    @DisplayName("T0001 - US1 - User Throw Not Found Exception")
     void followSellerThrowNotFoundExceptionUserTest() {
         //arrange
         Long userId = 1L;
@@ -71,7 +71,7 @@ class UserServiceImplTest {
         assertThrows(NotFoundException.class, () -> userService.followSeller(userId, userIdToFollow));
     }
     @Test
-    @DisplayName("US1 - Seller Throw Not Found Exception")
+    @DisplayName("T0001 - US1 - Seller Throw Not Found Exception")
     void followSellerThrowNotFoundExceptionSellerTest() {
         //arrange
         Long userId = 1L;
@@ -84,7 +84,7 @@ class UserServiceImplTest {
         assertThrows(NotFoundException.class, () -> userService.followSeller(userId, userIdToFollow));
     }
     @Test
-    @DisplayName("US1 - Throw Conflict Exception")
+    @DisplayName("T0001 - US1 - Throw Conflict Exception")
     void followSellerThrowConflictExceptionTest() {
         //arrange
         Long userId = 1L;
@@ -99,14 +99,66 @@ class UserServiceImplTest {
     }
 
     @Test
-    void unfollowSeller() {
+    @DisplayName("T0002 - US7 - Happy Path")
+    void unfollowSellerOkTest() {
+        //arrange
+        Long userId = 1L;
+        Long userIdToUnfollow = 10L;
+        Follow followRelation = new Follow(userIdToUnfollow, userId);
+        ResponseMessageDto expectedMessage = new ResponseMessageDto("El usuario "+userId+" a dejado de seguir al vendedor "+userIdToUnfollow);
+
+        when(followRepository.getFollowRelation(anyLong(),anyLong())).thenReturn(Optional.of(followRelation));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User(userId, "test_user")));
+        when(sellerRepository.findById(anyLong())).thenReturn(Optional.of(new Seller(userIdToUnfollow,"test_seller","+543492657482")));
+        when(followRepository.removeFollow(any())).thenReturn(followRelation);
+
+        //act
+        ResponseMessageDto foundMessage = userService.unfollowSeller(userId, userIdToUnfollow);
+
+        //assert
+        assertEquals(expectedMessage, foundMessage);
     }
 
     @Test
-    void getUserAndFollowedSellers() {
+    @DisplayName("T0002 - US7 - User Throw Not Found Exception")
+    void unfollowSellerThrowNotFoundExceptionUserTest() {
+        //arrange
+        Long userId = 1L;
+        Long userIdToUnfollow = 10L;
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        //act and assert
+        assertThrows(NotFoundException.class, () -> userService.unfollowSeller(userId, userIdToUnfollow));
     }
 
     @Test
-    void orderByName() {
+    @DisplayName("T0002 - US7 - Seller Throw Not Found Exception")
+    void unfollowSellerThrowNotFoundExceptionSellerTest() {
+        //arrange
+        Long userId = 1L;
+        Long userIdToUnfollow = 10L;
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User(userId, "test_user")));
+        when(sellerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        //act and assert
+        assertThrows(NotFoundException.class, () -> userService.unfollowSeller(userId, userIdToUnfollow));
     }
+
+    @Test
+    @DisplayName("T0002 - US7 - Throw Not Found Exception")
+    void unfollowSellerThrowNotFoundExceptionTest() {
+        //arrange
+        Long userId = 1L;
+        Long userIdToUnfollow = 10L;
+
+        when(followRepository.getFollowRelation(anyLong(),anyLong())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(new User(userId, "test_user")));
+        when(sellerRepository.findById(anyLong())).thenReturn(Optional.of(new Seller(userIdToUnfollow,"test_seller","+543492657482")));
+
+        //act and assert
+        assertThrows(NotFoundException.class, () -> userService.unfollowSeller(userId, userIdToUnfollow));
+    }
+
 }
