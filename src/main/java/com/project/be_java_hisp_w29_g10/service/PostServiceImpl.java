@@ -6,6 +6,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.*;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
+import com.project.be_java_hisp_w29_g10.enums.DateOrderType;
 import com.project.be_java_hisp_w29_g10.exception.BadRequestException;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
@@ -178,11 +179,11 @@ public class PostServiceImpl implements IPostService{
     }
 
     @Override
-    public RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, String order) {
+    public RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, DateOrderType order) {
         List<PostResponseDto> posts = new ArrayList<>(recentPostsResponse.getPosts());
-        if (order.equals("date_asc")) {
+        if (order == DateOrderType.DATE_ASC) {
             posts.sort(Comparator.comparing(PostResponseDto::getDate));
-        } else if (order.equals("date_desc")) {
+        } else if (order == DateOrderType.DATE_DESC) {
             posts.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
         }else {
             throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
