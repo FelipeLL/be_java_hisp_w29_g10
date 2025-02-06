@@ -6,8 +6,10 @@ import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Validated
 public class ProductController {
 
     private final IPostService postService;
@@ -24,7 +27,7 @@ public class ProductController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<String> savePost(@RequestBody PostRequestDto postDto){
+    public ResponseEntity<String> savePost(@Valid @RequestBody PostRequestDto postDto){
         postService.save(postDto);
         return new ResponseEntity<>("Publicación creada exitosamente.", HttpStatus.OK);
     }
