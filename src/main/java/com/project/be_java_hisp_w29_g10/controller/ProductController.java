@@ -7,6 +7,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.PromoPostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +33,9 @@ public class ProductController {
         return new ResponseEntity<>("Publicación creada exitosamente.", HttpStatus.OK);
     }
     @DeleteMapping("/post/{post_id}")
-    public ResponseEntity<String> deletePost(@PathVariable Long post_id){
+    public ResponseEntity<String> deletePost(
+            @PathVariable @Min(value = 1, message = "La id del post debe ser mayor a 0") Long post_id
+    ){
         postService.delete(post_id);
         return ResponseEntity.ok("Publicación eliminada exitosamente.");
     }
