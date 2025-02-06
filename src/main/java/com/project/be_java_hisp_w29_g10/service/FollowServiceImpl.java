@@ -13,17 +13,6 @@ public class FollowServiceImpl implements IFollowService {
         this.followRepository = followRepository;
     }
 
-    //Metodo para devolver la cantidad de seguidores de un vendedor(US2)
-    @Override
-    public Integer getCountFollowers(Long sellerId) {
-        return followRepository.getFollowersOfSeller(sellerId).size();
-    }
-
-    //Metodo para devolver la lista de seguidores de un vendedor(US3)
-    @Override
-    public List<Long> getFollowersOfSeller(Long sellerId) {
-        return followRepository.getFollowersOfSeller(sellerId);
-    }
     //Metodo para devolver la lista de vendedores que sigue de un usuario(US4)
     @Override
     public List<Long> getSellersFollowedByUser(Long id) {
