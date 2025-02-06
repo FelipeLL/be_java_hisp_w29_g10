@@ -64,7 +64,11 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/seller/{sellerId}/list")
-    public ResponseEntity<List<PromoPostResponseDto>> getPostsBySeller(@PathVariable Long sellerId, @RequestParam(required = false) Boolean hasPromo, @RequestParam(required = false) Integer category){
+    public ResponseEntity<List<PromoPostResponseDto>> getPostsBySeller(
+            @PathVariable @Min(value = 1, message = "La id del vendedor ser mayor a 0") Long sellerId,
+            @RequestParam(required = false) Boolean hasPromo,
+            @RequestParam(required = false) Integer category
+    ){
         return new ResponseEntity<>(postService.getPostsBySellerId(sellerId, hasPromo, category), HttpStatus.OK);
     }
 }
