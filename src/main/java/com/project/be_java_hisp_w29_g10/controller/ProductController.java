@@ -40,7 +40,7 @@ public class ProductController {
         return ResponseEntity.ok("Publicación eliminada exitosamente.");
     }
     @PostMapping("/promo-post")
-    public ResponseEntity<String> savePromoPost(@RequestBody PostRequestDto postRequestDto){
+    public ResponseEntity<String> savePromoPost(@RequestBody @Valid PostRequestDto postRequestDto){
         postService.savePromo(postRequestDto);
         return new ResponseEntity<>("Publicación con promo creada exitosamente.", HttpStatus.OK);
     }

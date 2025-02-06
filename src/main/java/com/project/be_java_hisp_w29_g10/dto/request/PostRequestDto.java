@@ -36,6 +36,7 @@ public class PostRequestDto {
     private ProductRequestDto product;
 
     @Builder.Default
+    @Min(value = 0, message = "El descuento debe ser mayor o igual a 0")
     private Double discount = 0.0;
 
     @Builder.Default
