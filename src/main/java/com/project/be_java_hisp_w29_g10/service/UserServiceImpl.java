@@ -5,6 +5,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.entity.Follow;
 import com.project.be_java_hisp_w29_g10.entity.User;
+import com.project.be_java_hisp_w29_g10.enums.NameSort;
 import com.project.be_java_hisp_w29_g10.exception.ConflictException;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.*;
@@ -69,14 +70,13 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public UserFollowedSellerDto OrderByName(UserFollowedSellerDto userFollowedSeller, String order) {
+    public UserFollowedSellerDto OrderByName(UserFollowedSellerDto userFollowedSeller, NameSort order) {
         List<FollowedSellerDto> followed = new ArrayList<>(userFollowedSeller.getFollowed());
-        if (order.equals("name_asc")) {
+
+        if (order == NameSort.NAME_ASC) {
             followed.sort(Comparator.comparing(FollowedSellerDto::getUser_name));
-        } else if (order.equals("name_desc")) {
+        } else if (order == NameSort.NAME_DESC) {
             followed.sort(Comparator.comparing(FollowedSellerDto::getUser_name).reversed());
-        }else {
-            throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
         }
 
         userFollowedSeller.setFollowed(followed);

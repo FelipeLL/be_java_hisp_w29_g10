@@ -4,6 +4,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowerDto;
 import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.entity.Seller;
+import com.project.be_java_hisp_w29_g10.enums.NameSort;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IFollowRepository;
 import com.project.be_java_hisp_w29_g10.repository.ISellerRepository;
@@ -56,15 +57,14 @@ public class SellerServiceImpl implements ISellerService{
     }
 
     @Override
-    public SellerFollowersDto OrderByName(SellerFollowersDto sellerFollowers, String order) {
+    public SellerFollowersDto OrderByName(SellerFollowersDto sellerFollowers, NameSort order) {
         List<FollowerDto> followers = new ArrayList<>(sellerFollowers.getFollowers());
-        if (order.equals("name_asc")) {
+        if (order == NameSort.NAME_ASC) {
             followers.sort(Comparator.comparing(FollowerDto::getUser_name));
-        } else if (order.equals("name_desc")) {
+        } else if (order == NameSort.NAME_DESC) {
             followers.sort(Comparator.comparing(FollowerDto::getUser_name).reversed());
-        }else {
-            throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
         }
+
         sellerFollowers.setFollowers(followers);
         return sellerFollowers;
     }

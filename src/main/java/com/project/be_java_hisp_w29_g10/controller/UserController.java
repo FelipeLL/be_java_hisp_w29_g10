@@ -4,6 +4,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.enums.NameSort;
 import com.project.be_java_hisp_w29_g10.service.ISellerService;
 import com.project.be_java_hisp_w29_g10.service.IUserService;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,8 @@ public class UserController {
         return new ResponseEntity<>(sellerService.getCountFollowers(userId), HttpStatus.OK);
     }
 
-    //ENDPOINT PARA OBTENER A UN VENDEDOR Y SU LISTA DE SEGUIDORES(US 03)
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId, @RequestParam(required = false) NameSort order) {
         SellerFollowersDto sellerFollowersDto = sellerService.getSellerAndFollowers(userId);
         if (order != null) {
             sellerFollowersDto = sellerService.OrderByName(sellerFollowersDto,order);
@@ -47,9 +47,8 @@ public class UserController {
         return new ResponseEntity<>(sellerFollowersDto, HttpStatus.OK);
     }
 
-    //ENDPOINT PARA OBTENER EL NOMBRE DE UN VENDEDOR(US 04)
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId, @RequestParam(required = false) NameSort order) {
         UserFollowedSellerDto userFollowedSeller = userService.getUserAndFollowedSellers(userId);
         if (order != null){
             userFollowedSeller = userService.OrderByName(userFollowedSeller,order);
