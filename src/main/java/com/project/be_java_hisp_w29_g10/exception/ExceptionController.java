@@ -4,10 +4,14 @@ import com.project.be_java_hisp_w29_g10.dto.ExceptionDto;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @ControllerAdvice
 public class ExceptionController {
@@ -31,7 +35,10 @@ public class ExceptionController {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-        ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
+        List<String> errorMessages = e.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.toList());
+        ExceptionDto exceptionDto = new ExceptionDto(String.join(", ", errorMessages));
         return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
     }
 
