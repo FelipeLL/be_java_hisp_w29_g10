@@ -56,6 +56,8 @@ class UserServiceImplTest {
         userFollowedSellers = new UserFollowedSellerDto(100L, "Juan Pablo", Arrays.asList(follower2, follower3, follower1));
     }
 
+    @Test
+    @DisplayName("US1 - Happy Path")
     void followSellerOkTest() {
         //arrange
         Long userId = 1L;
