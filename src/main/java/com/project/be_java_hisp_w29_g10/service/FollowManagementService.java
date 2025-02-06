@@ -15,11 +15,6 @@ public class FollowManagementService implements IFollowManagementService {
     }
 
     @Override
-    public String getUserName(Long userId) {
-        return userRepository.findById(userId).get().getUser_name();
-    }
-
-    @Override
     public String getSellerName(Long sellerId) {
         return sellerRepository.findById(sellerId).get().getUser_name();
     }
