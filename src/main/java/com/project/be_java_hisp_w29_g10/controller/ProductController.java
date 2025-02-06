@@ -45,7 +45,9 @@ public class ProductController {
         return new ResponseEntity<>("Publicación con promo creada exitosamente.", HttpStatus.OK);
     }
     @GetMapping("/promo-post/count")
-    public ResponseEntity<PromoPostCountDto> getPromoPost(@RequestParam Long user_id){
+    public ResponseEntity<PromoPostCountDto> getPromoPost(
+            @RequestParam @Min(value = 1, message = "La id del vendedor ser mayor a 0") Long user_id
+    ){
         PromoPostCountDto countDto = postService.getPromoPostCountBySellerId(user_id);
         return new ResponseEntity<>(countDto, HttpStatus.OK);
     }
