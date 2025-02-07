@@ -5,6 +5,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
+import com.project.be_java_hisp_w29_g10.enums.DateOrderType;
 import com.project.be_java_hisp_w29_g10.service.IPostService;
 import com.project.be_java_hisp_w29_g10.validator.ValidDateOrderType;
 import jakarta.validation.Valid;
@@ -55,7 +56,7 @@ public class ProductController {
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> getRecentPostsByFollowedSellers(
             @PathVariable @Min(value = 1, message = "La id del usuario ser mayor a 0") Long userId,
-            @RequestParam(required = false) @ValidDateOrderType(message = "Los ordenamientos validos son date_desc y date_asc") String order
+            @RequestParam(required = false) @ValidDateOrderType(message = "Los ordenamientos validos son date_desc y date_asc") DateOrderType order
     ) {
         RecentPostsResponseDto response = postService.getRecentPostsByFollowedSellers(userId);
         if (order != null){
