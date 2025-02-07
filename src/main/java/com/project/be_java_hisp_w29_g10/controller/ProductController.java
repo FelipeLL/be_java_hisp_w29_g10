@@ -56,11 +56,11 @@ public class ProductController {
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> getRecentPostsByFollowedSellers(
             @PathVariable @Min(value = 1, message = "La id del usuario ser mayor a 0") Long userId,
-            @RequestParam(required = false) @ValidDateOrderType(message = "Los ordenamientos validos son date_desc y date_asc") DateOrderType order
+            @RequestParam(required = false) @ValidDateOrderType(message = "Los ordenamientos validos son date_desc y date_asc") String order
     ) {
         RecentPostsResponseDto response = postService.getRecentPostsByFollowedSellers(userId);
         if (order != null){
-            response = postService.OrderByDate(response,order);
+            response = postService.OrderByDate(response,DateOrderType.valueOf(order.toUpperCase()));
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
