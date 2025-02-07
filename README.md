@@ -99,3 +99,71 @@ Un DTO (Data Transfer Object) es un objeto que se utiliza para transferir datos 
 - **ProductResponseDto:** Este DTO encapsula los datos de un producto.
 - **PostResponseDto:** Este DTO encapsula los datos de una publicación.
 - **ExceptionDto:** Este DTO encapsula un mensaje de excepción.
+
+## 📌 Sprint 1:
+
+###Documentación
+## Tests
+
+En esta sección se describen las pruebas realizados para garantizar la funcionalidad y la fiabilidad de la aplicación.
+
+### Pruebas Unitarias
+
+Las pruebas unitarias se enfocan en verificar la lógica de cada componente o clase de forma aislada.
+
+#### Herramientas
+
+- **JUnit**: Framework utilizado para ejecutar las pruebas unitarias.
+- **Mockito**: Utilizado para simular comportamientos y dependencias.
+
+A continuación, se describen los tests unitarios implementados para asegurar el correcto funcionamiento de las funcionalidades del proyecto:
+### T-0001: Verificar que el usuario a seguir exista (US-0001)
+- *Comportamiento esperado:*
+  - *Se cumple:* Permite continuar con normalidad.
+  - *No se cumple:* Notifica la no existencia mediante una excepción.
+### T-0002: Verificar que el usuario a dejar de seguir exista (US-0007)
+- *Comportamiento esperado:*
+  - *Se cumple:* Permite continuar con normalidad.
+  - *No se cumple:* Notifica la no existencia mediante una excepción.
+### T-0003: Verificar que el tipo de ordenamiento alfabético exista (US-0008)
+- *Comportamiento esperado:*
+  - *Se cumple:* Permite continuar con normalidad.
+  - *No se cumple:* Notifica la no existencia mediante una excepción.
+### T-0004: Verificar el correcto ordenamiento ascendente y descendente por nombre (US-0008)
+- *Comportamiento esperado:* Devuelve la lista ordenada según el criterio solicitado.
+### T-0005: Verificar que el tipo de ordenamiento por fecha exista (US-0009)
+- *Comportamiento esperado:*
+  - *Se cumple:* Permite continuar con normalidad.
+  - *No se cumple:* Notifica la no existencia mediante una excepción.
+### T-0006: Verificar el correcto ordenamiento ascendente y descendente por fecha (US-0009)
+- *Comportamiento esperado:* Devuelve la lista ordenada según el criterio solicitado.
+### T-0007: Verificar que la cantidad de seguidores de un determinado usuario sea correcta (US-0002)
+- *Comportamiento esperado:* Devuelve el cálculo correcto del total de la cantidad de seguidores que posee un usuario.
+### T-0008: Verificar que la consulta de publicaciones realizadas en las últimas dos semanas de un determinado vendedor sean efectivamente de las últimas dos semanas (US-0006)
+- *Comportamiento esperado:* Devuelve únicamente los datos de las publicaciones que tengan fecha de publicación dentro de las últimas dos semanas a partir del día de la fecha.
+
+### Pruebas de Integración
+
+Las pruebas de integración se desarrollaron utilizando `MockMvc` para simular peticiones HTTP y verificar las respuestas de los endpoints sin necesidad de desplegar un servidor web completo.
+
+Cada integrante del equipo se encargó de programar los tests de integración necesarios para asegurar que todas las funcionalidades desarrolladas en esta entrega funcionen correctamente cuando se integran con otras partes del sistema. Esto incluye la verificación de interacciones entre diferentes módulos y la validación de que los datos se procesen y transfieran adecuadamente entre componentes.
+
+#### Herramientas
+
+- **MockMvc**
+- **JUnit**
+
+#### Endpoints Probados
+
+### POST - /users/{userId}/follow/{userIdToFollow}
+### GET - /users/{userId}/followers/count
+### GET - /users/{userId}/followers/list
+### GET - /users/{userId}/followed/list
+### POST - /products/post
+### GET - /products/followed/{userId}/list 
+### POST - /users/{userId}/unfollow/{userIdToUnfollow}
+### GET - /users/{UserID}/followers/list?order=name_asc
+### GET - /products/followed/{userId}/list?order=date_asc 
+### POST - /products/promo-post | Brayan Steven Arellano Espinosa
+### GET - /products/promo-post/count?user_id={userId}
+
