@@ -4,6 +4,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.enums.NameOrderType;
 import com.project.be_java_hisp_w29_g10.service.ISellerService;
 import com.project.be_java_hisp_w29_g10.service.IUserService;
 import com.project.be_java_hisp_w29_g10.validator.ValidNameOrderType;
@@ -53,7 +54,7 @@ public class UserController {
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(
             @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userId,
-            @RequestParam(required = false) @ValidNameOrderType String order
+            @RequestParam(required = false) @ValidNameOrderType NameOrderType order
     ) {
         SellerFollowersDto sellerFollowersDto = sellerService.getSellerAndFollowers(userId);
         if (order != null) {
@@ -66,7 +67,7 @@ public class UserController {
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(
             @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
-            @RequestParam(required = false) @ValidNameOrderType String order
+            @RequestParam(required = false) @ValidNameOrderType NameOrderType order
     ) {
         UserFollowedSellerDto userFollowedSeller = userService.getUserAndFollowedSellers(userId);
         if (order != null){
