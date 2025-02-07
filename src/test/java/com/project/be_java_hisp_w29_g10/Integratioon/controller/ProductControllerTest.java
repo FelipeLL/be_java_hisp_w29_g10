@@ -59,4 +59,56 @@ class ProductControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Publicación creada exitosamente."));
     }
 
+    @Test
+    void savePromoPostOkTest() throws Exception {
+        PostRequestDto postRequestDto = new PostRequestDto(
+                1L,
+                LocalDate.of(2023, 10, 20),
+                2,
+                199.99,
+                new ProductRequestDto(
+                        1001L,
+                        "Laptop",
+                        "Electronics",
+                        "BrandX",
+                        "Black",
+                        "Latest model with extra features"
+                ),
+                10.0,
+                true
+        );
+        String body = mapper.writeValueAsString(postRequestDto);
+        mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(body))
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Publicación con promo creada exitosamente."));
+    }
+
+    @Test
+    void savePromoPostInvalidPromoTest() throws Exception {
+        PostRequestDto postRequestDto = new PostRequestDto(
+                1L,
+                LocalDate.of(2023, 10, 20),
+                2,
+                199.99,
+                new ProductRequestDto(
+                        1001L,
+                        "Laptop",
+                        "Electronics",
+                        "BrandX",
+                        "Black",
+                        "Latest model with extra features"
+                ),
+                0.0,
+                false
+        );
+        String body = mapper.writeValueAsString(postRequestDto);
+        mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(body))
+                ).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }
