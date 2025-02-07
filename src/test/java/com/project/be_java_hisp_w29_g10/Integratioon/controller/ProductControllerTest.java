@@ -6,6 +6,7 @@ import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -63,6 +64,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("IntegrationTest-011: Happy Path")
     void getPromoPostOkTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/promo-post/count?user_id=1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,6 +79,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("IntegrationTest-011: Non Existing Seller")
     void getPromoPostNotFoundTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/products/promo-post/count?user_id=100")
                         .contentType(MediaType.APPLICATION_JSON)
