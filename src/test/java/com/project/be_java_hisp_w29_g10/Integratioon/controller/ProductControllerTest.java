@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -60,6 +61,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("IntegrationTest-010: Happy Path")
     void savePromoPostOkTest() throws Exception {
         PostRequestDto postRequestDto = new PostRequestDto(
                 1L,
@@ -67,7 +69,7 @@ class ProductControllerTest {
                 2,
                 199.99,
                 new ProductRequestDto(
-                        1001L,
+                        1002L,
                         "Laptop",
                         "Electronics",
                         "BrandX",
@@ -87,6 +89,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("IntegrationTest-010: Invalid Promo Post")
     void savePromoPostInvalidPromoTest() throws Exception {
         PostRequestDto postRequestDto = new PostRequestDto(
                 1L,
