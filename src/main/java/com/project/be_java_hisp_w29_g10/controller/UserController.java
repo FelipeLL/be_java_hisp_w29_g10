@@ -4,14 +4,19 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowersCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.ResponseMessageDto;
 import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
+import com.project.be_java_hisp_w29_g10.enums.NameOrderType;
 import com.project.be_java_hisp_w29_g10.service.ISellerService;
 import com.project.be_java_hisp_w29_g10.service.IUserService;
+import com.project.be_java_hisp_w29_g10.validator.ValidNameOrderType;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@Validated
 public class UserController {
     private final IUserService userService;
     private final ISellerService sellerService;
@@ -22,24 +27,35 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
-    public ResponseEntity<ResponseMessageDto> followSeller(@PathVariable Long userId, @PathVariable Long userIdToFollow) {
+    public ResponseEntity<ResponseMessageDto> followSeller(
+            @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userIdToFollow)
+    {
         return ResponseEntity.ok(userService.followSeller(userId, userIdToFollow));
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<ResponseMessageDto> unfollowSeller(@PathVariable Long userId, @PathVariable Long userIdToUnfollow) {
+    public ResponseEntity<ResponseMessageDto> unfollowSeller(
+            @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userIdToUnfollow
+    ) {
         return ResponseEntity.ok(userService.unfollowSeller(userId, userIdToUnfollow));
     }
 
     //ENDPOINT PARA OBTENER LA CANTIDAD DE SEGUIDORES DE UN VENDEDOR(US 02)
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<FollowersCountDto> getCountFollowers(@PathVariable Long userId) {
+    public ResponseEntity<FollowersCountDto> getCountFollowers(
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userId
+    ) {
         return new ResponseEntity<>(sellerService.getCountFollowers(userId), HttpStatus.OK);
     }
 
     //ENDPOINT PARA OBTENER A UN VENDEDOR Y SU LISTA DE SEGUIDORES(US 03)
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(
+            @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userId,
+            @RequestParam(required = false) @ValidNameOrderType NameOrderType order
+    ) {
         SellerFollowersDto sellerFollowersDto = sellerService.getSellerAndFollowers(userId);
         if (order != null) {
             sellerFollowersDto = sellerService.OrderByName(sellerFollowersDto,order);
@@ -49,7 +65,10 @@ public class UserController {
 
     //ENDPOINT PARA OBTENER EL NOMBRE DE UN VENDEDOR(US 04)
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(@PathVariable Long userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(
+            @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
+            @RequestParam(required = false) @ValidNameOrderType NameOrderType order
+    ) {
         UserFollowedSellerDto userFollowedSeller = userService.getUserAndFollowedSellers(userId);
         if (order != null){
             userFollowedSeller = userService.OrderByName(userFollowedSeller,order);
