@@ -5,6 +5,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,6 +53,7 @@ class ProductControllerTest {
 
     }
 
+    @DisplayName("US9 - Posts OrderByDate Asc")
     @Test
     void getRecentPostsByFollowedSellersOrderByDateAscTest() throws Exception{
         String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/products/followed/{userId}/list?order=date_asc",1L)
@@ -68,6 +70,7 @@ class ProductControllerTest {
         assertEquals(sortedPost, recentPosts);
     }
 
+    @DisplayName("US9 - Posts OrderByDate Desc")
     @Test
     void getRecentPostsByFollowedSellersOrderByDateDescTest() throws Exception{
         String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/products/followed/{userId}/list?order=date_desc",1L)

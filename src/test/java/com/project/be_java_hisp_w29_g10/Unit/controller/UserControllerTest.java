@@ -5,6 +5,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.FollowedSellerDto;
 import com.project.be_java_hisp_w29_g10.dto.response.FollowerDto;
 import com.project.be_java_hisp_w29_g10.dto.response.SellerFollowersDto;
 import com.project.be_java_hisp_w29_g10.dto.response.UserFollowedSellerDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,6 +53,7 @@ class UserControllerTest {
     void getUserAndFollowedSellers() {
     }
 
+    @DisplayName("US8 - Follower OrderByName Asc")
     @Test
     void getSellerAndFollowersOrderByNameAscTest() throws Exception{
         String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/list?order=name_asc",1L)
@@ -68,6 +70,7 @@ class UserControllerTest {
         assertEquals(sortedFollowers,followers);
     }
 
+    @DisplayName("US8 - Follower OrderByName Desc")
     @Test
     void getSellerAndFollowersOrderByNameDescTest() throws Exception {
         String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/list?order=name_desc", 1L)
@@ -84,6 +87,7 @@ class UserControllerTest {
         assertEquals(sortedFollowers, followers);
     }
 
+    @DisplayName("US8 - Followed OrderByName Asc")
     @Test
     void getUserAndFollowedSellersOrderByNameAscTest() throws Exception{
         String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followed/list?order=name_asc",1L)
@@ -100,6 +104,7 @@ class UserControllerTest {
         assertEquals(sortedFollowed,followed);
     }
 
+    @DisplayName("US8 - Followed OrderByName Desc")
     @Test
     void getUserAndFollowedSellersOrderByNameDescTest() throws Exception{
         String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followed/list?order=name_desc",1L)
