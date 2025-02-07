@@ -1,5 +1,6 @@
 package com.project.be_java_hisp_w29_g10.Unit.controller;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,7 +21,8 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void followSeller() throws Exception {
+    @DisplayName("US001 - Happy Path")
+    void followSellerOk() throws Exception {
         mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}",1L,5L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -28,7 +30,8 @@ class UserControllerTest {
     }
 
     @Test
-    void unfollowSeller() throws Exception{
+    @DisplayName("US0007 - Happy Path")
+    void unfollowSellerOk() throws Exception{
         mockMvc.perform(post("/users/{userId}/unfollow/{userIdToFollow}",1L,4L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
