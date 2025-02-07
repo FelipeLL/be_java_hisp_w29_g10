@@ -74,16 +74,16 @@ class ProductControllerTest {
     @Test
     @DisplayName("IntegrationTest-011: Happy Path")
     void getPromoPostOkTest() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/promo-post/count?user_id=1")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/promo-post/count?user_id=2")
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
         PromoPostCountDto response = mapper.readValue(result.getResponse().getContentAsString(), PromoPostCountDto.class);
         //assertions
-        assertEquals(1L, response.getUser_id());
-        assertEquals("Andrés", response.getUser_name());
-        assertEquals(2L, response.getPromo_products_count());
+        assertEquals(2L, response.getUser_id());
+        assertEquals("Beatriz", response.getUser_name());
+        assertEquals(1L, response.getPromo_products_count());
     }
 
     @Test
@@ -95,6 +95,7 @@ class ProductControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
     @DisplayName("IntegrationTest-010: Happy Path")
     void savePromoPostOkTest() throws Exception {
         PostRequestDto postRequestDto = new PostRequestDto(
