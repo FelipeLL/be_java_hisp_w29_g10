@@ -185,8 +185,6 @@ public class PostServiceImpl implements IPostService{
             posts.sort(Comparator.comparing(PostResponseDto::getDate));
         } else if (order == DateOrderType.DATE_DESC) {
             posts.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
-        }else {
-            throw new NotFoundException("No se encontro el tipo de ordenamiento especificado");
         }
 
         recentPostsResponse.setPosts(posts);
