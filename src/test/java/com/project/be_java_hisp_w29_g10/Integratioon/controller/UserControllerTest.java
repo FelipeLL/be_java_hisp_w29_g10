@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -22,6 +23,42 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Test
+    @DisplayName("US001 - Happy Path")
+    void followSellerOk() throws Exception {
+        mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}",1L,5L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("message").value("El usuario 1 ahora sigue al vendedor 5"));
+    }
+
+    @Test
+    @DisplayName("US0001 - Invalid UserID")
+    void followSellerInvalidUserId() throws Exception{
+        mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}", 150L, 1L))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("message").value("No se encontró el usuario con el ID: 150"));
+    }
+
+    @Test
+    @DisplayName("US0007 - Happy Path")
+    void unfollowSellerOk() throws Exception{
+        mockMvc.perform(post("/users/{userId}/unfollow/{userIdToFollow}",1L,4L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("message").value("El usuario 1 a dejado de seguir al vendedor 4"));
+    }
+
+    @Test
+    @DisplayName("US0007 - Invalid SellerID")
+    void unfollowSellerInvalidSellerId() throws Exception{
+        mockMvc.perform(post("/users/{userId}/unfollow/{userIdToFollow}", 1L, 150L))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("message").value("No se encontró el vendedor con el ID: 150"));
+    }
 
     
     @Test
