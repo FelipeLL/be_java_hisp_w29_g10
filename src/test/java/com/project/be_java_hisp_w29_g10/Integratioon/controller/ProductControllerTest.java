@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,6 +64,29 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("IntegrationTest-011: Happy Path")
+    void getPromoPostOkTest() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/promo-post/count?user_id=1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+        PromoPostCountDto response = mapper.readValue(result.getResponse().getContentAsString(), PromoPostCountDto.class);
+        //assertions
+        assertEquals(1L, response.getUser_id());
+        assertEquals("Andrés", response.getUser_name());
+        assertEquals(2L, response.getPromo_products_count());
+    }
+
+    @Test
+    @DisplayName("IntegrationTest-011: Non Existing Seller")
+    void getPromoPostNotFoundTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/products/promo-post/count?user_id=100")
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
     @DisplayName("IntegrationTest-010: Happy Path")
     void savePromoPostOkTest() throws Exception {
         PostRequestDto postRequestDto = new PostRequestDto(
