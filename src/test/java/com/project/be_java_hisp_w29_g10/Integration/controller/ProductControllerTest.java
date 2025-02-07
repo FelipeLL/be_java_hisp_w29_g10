@@ -1,9 +1,10 @@
-package com.project.be_java_hisp_w29_g10.Integratioon.controller;
+package com.project.be_java_hisp_w29_g10.Integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.be_java_hisp_w29_g10.dto.request.PostRequestDto;
 import com.project.be_java_hisp_w29_g10.dto.request.ProductRequestDto;
+import com.project.be_java_hisp_w29_g10.dto.response.PostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -37,6 +41,7 @@ class ProductControllerTest {
     ObjectMapper mapper;
 
     @Test
+    @DisplayName("IntegrationTest-05: Happy Path")
     void savePostOkTest() throws Exception {
         ProductRequestDto productDto = new ProductRequestDto(
                 1001L,
@@ -195,5 +200,39 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("US9 - Posts OrderByDate Asc")
+    @Test
+    void getRecentPostsByFollowedSellersOrderByDateAscTest() throws Exception{
+        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/products/followed/{userId}/list?order=date_asc",1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        RecentPostsResponseDto recentPostsResponseDto = mapper.readValue(result, RecentPostsResponseDto.class);
+        List<PostResponseDto> recentPosts = recentPostsResponseDto.getPosts();
+
+        List<PostResponseDto> sortedPost = new ArrayList<>(recentPosts);
+
+        sortedPost.sort(Comparator.comparing(PostResponseDto::getDate));
+
+        assertEquals(sortedPost, recentPosts);
+    }
+
+    @DisplayName("US9 - Posts OrderByDate Desc")
+    @Test
+    void getRecentPostsByFollowedSellersOrderByDateDescTest() throws Exception{
+        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/products/followed/{userId}/list?order=date_desc",1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        RecentPostsResponseDto recentPostsResponseDto = mapper.readValue(result, RecentPostsResponseDto.class);
+        List<PostResponseDto> recentPosts = recentPostsResponseDto.getPosts();
+
+        List<PostResponseDto> sortedPost = new ArrayList<>(recentPosts);
+
+        sortedPost.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
+
+        assertEquals(sortedPost, recentPosts);
     }
 }

@@ -53,40 +53,6 @@ class ProductControllerTest {
 
     }
 
-    @DisplayName("US9 - Posts OrderByDate Asc")
-    @Test
-    void getRecentPostsByFollowedSellersOrderByDateAscTest() throws Exception{
-        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/products/followed/{userId}/list?order=date_asc",1L)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        RecentPostsResponseDto recentPostsResponseDto = objectMapper.readValue(result, RecentPostsResponseDto.class);
-        List<PostResponseDto> recentPosts = recentPostsResponseDto.getPosts();
-
-        List<PostResponseDto> sortedPost = new ArrayList<>(recentPosts);
-
-        sortedPost.sort(Comparator.comparing(PostResponseDto::getDate));
-
-        assertEquals(sortedPost, recentPosts);
-    }
-
-    @DisplayName("US9 - Posts OrderByDate Desc")
-    @Test
-    void getRecentPostsByFollowedSellersOrderByDateDescTest() throws Exception{
-        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/products/followed/{userId}/list?order=date_desc",1L)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        RecentPostsResponseDto recentPostsResponseDto = objectMapper.readValue(result, RecentPostsResponseDto.class);
-        List<PostResponseDto> recentPosts = recentPostsResponseDto.getPosts();
-
-        List<PostResponseDto> sortedPost = new ArrayList<>(recentPosts);
-
-        sortedPost.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
-
-        assertEquals(sortedPost, recentPosts);
-    }
-
     @Test
     void getPostsBySeller() {
     }
