@@ -115,4 +115,5 @@ class UserControllerTest {
 
         assertEquals(sortedFollowed,followed);
     }
+
 }

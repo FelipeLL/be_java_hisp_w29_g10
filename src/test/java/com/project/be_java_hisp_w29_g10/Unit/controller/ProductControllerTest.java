@@ -84,7 +84,6 @@ class ProductControllerTest {
         assertEquals(sortedPost, recentPosts);
     }
 
-
     @Test
     void getPostsBySeller() {
     }
