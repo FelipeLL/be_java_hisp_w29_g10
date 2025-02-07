@@ -1,5 +1,6 @@
-package com.project.be_java_hisp_w29_g10.Integratioon.controller;
+package com.project.be_java_hisp_w29_g10.Integration.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.be_java_hisp_w29_g10.dto.response.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,9 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,6 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @Test
     @DisplayName("US001 - Happy Path")
@@ -144,6 +153,74 @@ public class UserControllerTest {
     void getUserAndFollowedSellersThrowNotFoundException() throws Exception{
         mockMvc.perform(get("/users/{userId}/followed/list", 999L))
                 .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("US8 - Follower OrderByName Asc")
+    @Test
+    void getSellerAndFollowersOrderByNameAscTest() throws Exception{
+        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/list?order=name_asc",1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        SellerFollowersDto sellerFollowersDto = objectMapper.readValue(result, SellerFollowersDto.class);
+        List<FollowerDto> followers = sellerFollowersDto.getFollowers();
+
+        List<FollowerDto> sortedFollowers = new ArrayList<>(followers);
+
+        sortedFollowers.sort(Comparator.comparing(FollowerDto::getUser_name));
+
+        assertEquals(sortedFollowers,followers);
+    }
+
+    @DisplayName("US8 - Follower OrderByName Desc")
+    @Test
+    void getSellerAndFollowersOrderByNameDescTest() throws Exception {
+        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followers/list?order=name_desc", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        SellerFollowersDto sellerFollowersDto = objectMapper.readValue(result, SellerFollowersDto.class);
+        List<FollowerDto> followers = sellerFollowersDto.getFollowers();
+
+        List<FollowerDto> sortedFollowers = new ArrayList<>(followers);
+
+        sortedFollowers.sort(Comparator.comparing(FollowerDto::getUser_name).reversed());
+
+        assertEquals(sortedFollowers, followers);
+    }
+
+    @DisplayName("US8 - Followed OrderByName Asc")
+    @Test
+    void getUserAndFollowedSellersOrderByNameAscTest() throws Exception{
+        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followed/list?order=name_asc",1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        UserFollowedSellerDto userFollowedSellerDto = objectMapper.readValue(result, UserFollowedSellerDto.class);
+        List<FollowedSellerDto> followed = userFollowedSellerDto.getFollowed();
+
+        List<FollowedSellerDto> sortedFollowed = new ArrayList<>(followed);
+
+        sortedFollowed.sort(Comparator.comparing(FollowedSellerDto::getUser_name));
+
+        assertEquals(sortedFollowed,followed);
+    }
+
+    @DisplayName("US8 - Followed OrderByName Desc")
+    @Test
+    void getUserAndFollowedSellersOrderByNameDescTest() throws Exception{
+        String result = this.mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId}/followed/list?order=name_desc",1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        UserFollowedSellerDto userFollowedSellerDto = objectMapper.readValue(result, UserFollowedSellerDto.class);
+        List<FollowedSellerDto> followed = userFollowedSellerDto.getFollowed();
+
+        List<FollowedSellerDto> sortedFollowed = new ArrayList<>(followed);
+
+        sortedFollowed.sort(Comparator.comparing(FollowedSellerDto::getUser_name).reversed());
+
+        assertEquals(sortedFollowed,followed);
     }
 
 
