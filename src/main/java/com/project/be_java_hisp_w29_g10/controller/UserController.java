@@ -54,11 +54,11 @@ public class UserController {
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<SellerFollowersDto> getSellerAndFollowers(
             @PathVariable @Min(value = 1, message = "La id del vendedor debe ser mayor a 0") Long userId,
-            @RequestParam(required = false) @ValidNameOrderType NameOrderType order
+            @RequestParam(required = false) @ValidNameOrderType String order
     ) {
         SellerFollowersDto sellerFollowersDto = sellerService.getSellerAndFollowers(userId);
         if (order != null) {
-            sellerFollowersDto = sellerService.OrderByName(sellerFollowersDto,order);
+            sellerFollowersDto = sellerService.OrderByName(sellerFollowersDto,NameOrderType.valueOf(order.toUpperCase()));
         }
         return new ResponseEntity<>(sellerFollowersDto, HttpStatus.OK);
     }
@@ -67,11 +67,11 @@ public class UserController {
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<UserFollowedSellerDto> getUserAndFollowedSellers(
             @PathVariable @Min(value = 1, message = "La id del usuario debe ser mayor a 0") Long userId,
-            @RequestParam(required = false) @ValidNameOrderType NameOrderType order
+            @RequestParam(required = false) @ValidNameOrderType String order
     ) {
         UserFollowedSellerDto userFollowedSeller = userService.getUserAndFollowedSellers(userId);
         if (order != null){
-            userFollowedSeller = userService.OrderByName(userFollowedSeller,order);
+            userFollowedSeller = userService.OrderByName(userFollowedSeller,NameOrderType.valueOf(order.toUpperCase()));
         }
         return new ResponseEntity<>(userFollowedSeller, HttpStatus.OK);
     }
