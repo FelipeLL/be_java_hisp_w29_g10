@@ -16,14 +16,14 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    //US2 OK
+    
     @Test
     @DisplayName("US2 - Test getCountFollowers - OK")
     void getCountFollowers() throws Exception {
@@ -36,7 +36,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.follow_count").value(followersCountDto.getFollow_count()));
     }
 
-    //US2 NOT FOUND
+    
     @DisplayName("US2 - Test getCountFollowers - Not Found")
     @Test
     void getCountFollowersThrowNotFoundException() throws Exception{
@@ -44,7 +44,7 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    //US3 OK SIN ORDEN
+    
     @DisplayName("US3 - Test getSellerAndFollowers - OK")
     @Test
     void getSellerAndFollowersWithoutOrder() throws Exception {
@@ -72,7 +72,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.followers[4].user_name").value(sellerFollowersDto.getFollowers().get(4).getUser_name()));
     }
 
-    //US 3 NOT FOUND
+    
     @DisplayName("US3 - Test getSellerAndFollowers - Not Found")
     @Test
     void getSellerAndFollowersThrowNotFoundException() throws Exception {
@@ -80,7 +80,7 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    //US4 OK SIN ORDEN
+    
     @Test
     @DisplayName("US4 - Test getUserAndFollowedSellers - OK")
     void getUserAndFollowedSellersWithoutOrder() throws Exception{
@@ -101,7 +101,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.followed[1].user_name").value(userFollowedSellerDto.getFollowed().get(1).getUser_name()));
     }
 
-    //US4 NOT FOUND
+
     @Test
     @DisplayName("US4 - Test getUserAndFollowedSellers - Not Found")
     void getUserAndFollowedSellersThrowNotFoundException() throws Exception{
