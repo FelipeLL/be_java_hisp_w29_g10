@@ -6,6 +6,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
 import com.project.be_java_hisp_w29_g10.entity.Product;
 import com.project.be_java_hisp_w29_g10.entity.User;
+import com.project.be_java_hisp_w29_g10.enums.DateOrderType;
 import com.project.be_java_hisp_w29_g10.exception.NotFoundException;
 import com.project.be_java_hisp_w29_g10.repository.IPostRepository;
 import com.project.be_java_hisp_w29_g10.repository.IUserRepository;
@@ -21,10 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -51,10 +49,24 @@ class PostServiceImplTest {
     private Post recentPost;
     private Post oldPost;
     private Product mockProduct;
+    private RecentPostsResponseDto recentPostsRespons;
 
     @BeforeEach
     void setUp() {
         testUser = new User(1L, "test_user");
+
+        List<PostResponseDto> posts = new ArrayList<>();
+        ProductResponseDto product1 = new ProductResponseDto(1L, "Producto 1", "Tipo A", "Marca A", "Rojo", "Notas del producto 1");
+        PostResponseDto post1 = new PostResponseDto(101L, 201L, "2023-10-01", product1, 1, 19.99);
+        posts.add(post1);
+        ProductResponseDto product2 = new ProductResponseDto(2L, "Producto 2", "Tipo B", "Marca B", "Azul", "Notas del producto 2");
+        PostResponseDto post2 = new PostResponseDto(102L, 202L, "2023-10-02", product2, 2, 29.99);
+        posts.add(post2);
+        ProductResponseDto product3 = new ProductResponseDto(3L, "Producto 3", "Tipo C", "Marca C", "Verde", "Notas del producto 3");
+        PostResponseDto post3 = new PostResponseDto(103L, 203L, "2023-10-03", product3, 3, 39.99);
+        posts.add(post3);
+
+        recentPostsRespons = new RecentPostsResponseDto(1001L, posts);
 
         recentPost = Post.builder()
                 .post_id(100L)
@@ -139,5 +151,33 @@ class PostServiceImplTest {
         // Assert
         assertNotNull(response);
         assertTrue(response.getPosts().isEmpty());
+    }
+
+    @Test
+    @DisplayName("US9 - Happy Path Asc")
+    void orderByDateAscOkTest() {
+        // Arrange
+        List<PostResponseDto> originalPosts = new ArrayList<>(recentPostsRespons.getPosts());
+
+        List<PostResponseDto> postsAsc = new ArrayList<>(originalPosts);
+        postsAsc.sort(Comparator.comparing(PostResponseDto::getDate));
+
+        // Act and assert
+        RecentPostsResponseDto orderAsc = postService.OrderByDate(recentPostsRespons, DateOrderType.DATE_ASC);
+        assertEquals(postsAsc, orderAsc.getPosts());
+    }
+
+    @Test
+    @DisplayName("US9 - Happy Path Desc")
+    void orderByDateDescOkTest() {
+        // Arrange
+        List<PostResponseDto> originalPosts = new ArrayList<>(recentPostsRespons.getPosts());
+
+        List<PostResponseDto> postsDesc = new ArrayList<>(originalPosts);
+        postsDesc.sort(Comparator.comparing(PostResponseDto::getDate).reversed());
+
+        //Act and assert
+        RecentPostsResponseDto orderDesc = postService.OrderByDate(recentPostsRespons, DateOrderType.DATE_DESC);
+        assertEquals(postsDesc, orderDesc.getPosts());
     }
 }

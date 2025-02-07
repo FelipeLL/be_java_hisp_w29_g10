@@ -7,6 +7,7 @@ import com.project.be_java_hisp_w29_g10.dto.response.PromoPostCountDto;
 import com.project.be_java_hisp_w29_g10.dto.response.PromoPostResponseDto;
 import com.project.be_java_hisp_w29_g10.dto.response.RecentPostsResponseDto;
 import com.project.be_java_hisp_w29_g10.entity.Post;
+import com.project.be_java_hisp_w29_g10.enums.DateOrderType;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface IPostService {
     List<PromoPostResponseDto> getPostsBySellerId(Long sellerId, Boolean hasPromo, Integer category);
     PromoPostCountDto getPromoPostCountBySellerId(Long userId);
     RecentPostsResponseDto getRecentPostsByFollowedSellers(Long userId);
-    RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, String order);
+    RecentPostsResponseDto OrderByDate(RecentPostsResponseDto recentPostsResponse, DateOrderType order);
 }
